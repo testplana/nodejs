@@ -101,7 +101,10 @@ app.get('/newscontent', function (req, res) {
     initDb(function(err){});
   }
   if (db) {
-	var re = db.collection('news').find().pretty();
+
+	db.collection('news').count(function(err, count ){
+      res.send('{ newCount: ' + count + '}');
+    });
 	res.send(re);	
   } else {
     res.send('{ failed: -1 }');
