@@ -2,7 +2,7 @@
 var express = require('express'),
     app     = express(),
     morgan  = require('morgan');
-
+var request = require('request');
 var cheerio = require('cheerio');
 Object.assign=require('object-assign')
 
