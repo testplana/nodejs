@@ -101,7 +101,7 @@ app.get('/newscontent', function (req, res) {
     initDb(function(err){});
   }
   if (db) {
-	var re = db.collection('news').find.pretty();
+	var re = db.collection('news').find().pretty();
 	res.send(re);	
   } else {
     res.send('{ failed: -1 }');
