@@ -98,7 +98,7 @@ app.get('/pagecount', function (req, res) {
 app.get('/test', function (req, res) {
   // try to initialize the db on every request if it's not already
   // initialized.
-
+const result = []; 
  request({
     url: "http://www.cwb.gov.tw/V7/modules/MOD_EC_Home.htm", // 中央氣象局網頁
     method: "GET"
@@ -107,7 +107,7 @@ app.get('/test', function (req, res) {
       return;
     }
     const $ = cheerio.load(body); // 載入 body
-    const result = []; // 建立一個儲存結果的容器
+    // 建立一個儲存結果的容器
     const table_tr = $(".BoxTable tr"); // 爬最外層的 Table(class=BoxTable) 中的 tr
 
     for (let i = 1; i < table_tr.length; i++) { // 走訪 tr
