@@ -102,10 +102,9 @@ var url = "http://v.163.com/special/opencourse/englishs1.html"
 var test = "";
  request(url, (err, res, body) => {
   const $ = cheerio.load(body)
-    $("a.downbtn").each(function(i, e) {
-     test +=  $(e).attr("href");
-    });
-	 
+  
+     test +=  $("a.downbtn")[0];
+
 })
   res.send('{ text: ' + test + '}');
 	
