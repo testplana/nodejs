@@ -151,7 +151,7 @@ var result = [];
 	})
 	$('.row0').filter(function(){
 		var data = $(this);	
-		uvar datetime = data.children().first().text().trim();
+		var datetime = data.children().first().text().trim();
 	var stockNo = data.children().first().next().text().trim();
 	var stockName = data.children().first().next().next().text().trim();
 	var docName = data.children().last().text().trim();
