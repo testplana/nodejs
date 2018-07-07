@@ -94,6 +94,21 @@ app.get('/pagecount', function (req, res) {
 });
 
 
+app.get('/newscontent', function (req, res) {
+  // try to initialize the db on every request if it's not already
+  // initialized.
+  if (!db) {
+    initDb(function(err){});
+  }
+  if (db) {
+	var re = db.collection('news').find.pretty();
+	res.send(re);	
+  } else {
+    res.send('{ failed: -1 }');
+  }
+});
+
+
 
 app.get('/test', function (req, res) {
   // try to initialize the db on every request if it's not already
@@ -140,7 +155,14 @@ var uploadToDB = function(data){
 	var docName = data.children().last().text().trim();
 	var docUrl = data.children().last().children('a').attr('href');
 	result.push(Object.assign({ datetime, stockNo, stockName, docName, docUrl }));
-    	
+	db.news.insert({
+	   _id: datetime+stockNo,
+		datetime: datetime,
+		stockNo: stockNo,
+		stockName: stockName,
+		docName: docName,
+		docUrl: docUrl	
+	})	
 	
 	
 }
