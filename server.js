@@ -99,7 +99,7 @@ app.get('/test', function (req, res) {
   // try to initialize the db on every request if it's not already
   // initialized.
 const result = []; 
- request({
+ /*request({
     url: "http://www.cwb.gov.tw/V7/modules/MOD_EC_Home.htm", // 中央氣象局網頁
     method: "GET"
   }, function (error, response, body) {
@@ -126,8 +126,53 @@ const result = [];
     console.log(result);
    
   });
-  
-  res.send( result);
+  */
+  var url ='http://www.hkexnews.hk/listedco/listconews/mainindex/SEHK_LISTEDCO_DATETIME_TODAY_C.HTM';
+var uploadToDB = function(data){
+	
+				
+	var datetime = data.children().first().text().trim();
+	var stockNo = data.children().first().next().text().trim();
+	var stockName = data.children().first().next().next().text().trim();
+	var docName = data.children().last().text().trim();
+	var docUrl = data.children().last().children('a').attr('href');
+					
+	
+	result.push({
+		id: datetime+stockNo,
+		datetime: datetime,
+		stockNo: stockNo,
+		stockName: stockName,
+		docName: docName,
+		docUrl: docUrl	
+	});		
+	
+	
+}
+
+  request({
+    url: url, 
+    method: "GET"
+  }, function (error, response, body) {
+    if (error || !body) {
+      return;
+    }
+    const $ = cheerio.load(body); // 載入 body
+    // 建立一個儲存結果的容器
+    $('.row1').filter(function(){
+		var data = $(this);				
+		uploadToDB(data);	
+	})
+	$('.row0').filter(function(){
+		var data = $(this);	
+		uploadToDB(data);
+	})
+    // 在終端機(console)列出結果
+
+   
+  });
+  console.log(result);
+  res.send(result);
 	
 });
 
