@@ -98,7 +98,7 @@ app.get('/pagecount', function (req, res) {
 app.get('/test', function (req, res) {
   // try to initialize the db on every request if it's not already
   // initialized.
-const result = []; 
+var result = []; 
  /*request({
     url: "http://www.cwb.gov.tw/V7/modules/MOD_EC_Home.htm", // 中央氣象局網頁
     method: "GET"
@@ -128,27 +128,6 @@ const result = [];
   });
   */
   var url ='http://www.hkexnews.hk/listedco/listconews/mainindex/SEHK_LISTEDCO_DATETIME_TODAY_C.HTM';
-var uploadToDB = function(data){
-	
-				
-	var datetime = data.children().first().text().trim();
-	var stockNo = data.children().first().next().text().trim();
-	var stockName = data.children().first().next().next().text().trim();
-	var docName = data.children().last().text().trim();
-	var docUrl = data.children().last().children('a').attr('href');
-					
-	
-	result.push({
-		id: datetime+stockNo,
-		datetime: datetime,
-		stockNo: stockNo,
-		stockName: stockName,
-		docName: docName,
-		docUrl: docUrl	
-	});		
-	
-	
-}
 
   request({
     url: url, 
@@ -161,11 +140,25 @@ var uploadToDB = function(data){
     // 建立一個儲存結果的容器
     $('.row1').filter(function(){
 		var data = $(this);				
-		uploadToDB(data);	
+		var datetime = data.children().first().text().trim();
+	var stockNo = data.children().first().next().text().trim();
+	var stockName = data.children().first().next().next().text().trim();
+	var docName = data.children().last().text().trim();
+	var docUrl = data.children().last().children('a').attr('href');
+			console.log("stockNo: "+stockNo);			
+	Object.assign({ datetime, stockNo, longitude, stockName, depth, docName, docUrl })
+	
 	})
 	$('.row0').filter(function(){
 		var data = $(this);	
-		uploadToDB(data);
+		uvar datetime = data.children().first().text().trim();
+	var stockNo = data.children().first().next().text().trim();
+	var stockName = data.children().first().next().next().text().trim();
+	var docName = data.children().last().text().trim();
+	var docUrl = data.children().last().children('a').attr('href');
+		console.log("stockNo: "+stockNo);	
+	Object.assign({ datetime, stockNo, longitude, stockName, depth, docName, docUrl })
+
 	})
     // 在終端機(console)列出結果
 
