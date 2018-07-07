@@ -3,7 +3,7 @@ var express = require('express'),
     app     = express(),
     morgan  = require('morgan');
 
-var cheerio = require('cheerio');
+//var cheerio = require('cheerio');
 Object.assign=require('object-assign')
 
 app.engine('html', require('ejs').renderFile);
