@@ -105,9 +105,10 @@ var test = "";
     $("a.downbtn").each(function(i, e) {
      test +=  $(e).attr("href");
     });
-	   res.send('{ text: ' + test + '}');
-	
+	 
 })
+  res.send('{ text: ' + test + '}');
+	
 });
 
 // error handling
