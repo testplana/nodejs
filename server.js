@@ -131,7 +131,7 @@ const result = [];
 	
 });
 var url ='http://www.hkexnews.hk/listedco/listconews/mainindex/SEHK_LISTEDCO_DATETIME_TODAY_C.HTM';
-	
+const result = []; 
 var uploadToDB = function(data){
 			
 	var datetime = data.children().first().text().trim();
