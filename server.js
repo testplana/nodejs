@@ -155,7 +155,8 @@ var uploadToDB = function(data){
 	var docName = data.children().last().text().trim();
 	var docUrl = data.children().last().children('a').attr('href');
 	result.push(Object.assign({ datetime, stockNo, stockName, docName, docUrl }));
-	db.news.insert({
+	var news = db.collection('news');
+	news.insert({
 	   _id: datetime+stockNo,
 		datetime: datetime,
 		stockNo: stockNo,
