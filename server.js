@@ -111,7 +111,20 @@ app.get('/newscontent', function (req, res) {
   }
 });
 
+app.get('/newsdelete', function (req, res) {
+  // try to initialize the db on every request if it's not already
+  // initialized.
+  if (!db) {
+    initDb(function(err){});
+  }
+  if (db) {
 
+	db.collection('news').remove( { } );
+	res.send('{ removed: 1 }');	
+  } else {
+    res.send('{ failed: -1 }');
+  }
+});
 
 app.get('/test', function (req, res) {
   // try to initialize the db on every request if it's not already
