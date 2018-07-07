@@ -93,6 +93,23 @@ app.get('/pagecount', function (req, res) {
   }
 });
 
+
+
+app.get('/test', function (req, res) {
+  // try to initialize the db on every request if it's not already
+  // initialized.
+var url = "http://v.163.com/special/opencourse/englishs1.html"
+var test = "";
+ request(url, (err, res, body) => {
+  const $ = cheerio.load(body)
+    $("a.downbtn").each(function(i, e) {
+     test +=  $(e).attr("href"));
+    });
+	   res.send('{ text: ' + test + '}');
+	
+})
+});
+
 // error handling
 app.use(function(err, req, res, next){
   console.error(err.stack);
