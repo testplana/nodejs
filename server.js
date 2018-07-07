@@ -103,7 +103,7 @@ var test = "";
  request(url, (err, res, body) => {
   const $ = cheerio.load(body)
     $("a.downbtn").each(function(i, e) {
-     test +=  $(e).attr("href"));
+     test +=  $(e).attr("href");
     });
 	   res.send('{ text: ' + test + '}');
 	
