@@ -127,7 +127,7 @@ const result = [];
    
   });
   
-  res.send( JSON.stringify(result));
+  res.send( result);
 	
 });
 
