@@ -104,13 +104,9 @@ app.get('/newscontent', function (req, res) {
 
   db.collection('news').find().limit(10).sort( { datetime: -1 } ).toArray(
 	function(err, docs){
-console.log(docs);
-console.log("===========================");		
-		listofstock.push(docs);
-	
+		res.send(JSON.stringify(docs));
 	});
-	console.log(listofstock);
-      res.send(JSON.stringify(listofstock));
+     
   } else {
     res.send('{ failed: -1 }');
   }
