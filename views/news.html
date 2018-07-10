@@ -220,17 +220,15 @@ pre {
 </section>
 
 </body>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+
 <script>
-$.ajax({
-  url:  data: data,
-  success: success,
-  dataType: dataType
-});
+
 var url = "http://nodejs-mongo-persistent-nodejs-1.1d35.starter-us-east-1.openshiftapps.com/newscontent";
 
  
 $.get( url, function( data ) {
-for (i = 0 ; i < data.length.i++){
+for (i = 0 ; i < data.length;i++){
  $( ".content" )
     .append( "Stock: " + data[i].stockNo + " " + data[i].stockName + " " + "News: " + data[i].docName) // John
 }
