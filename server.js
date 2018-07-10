@@ -93,7 +93,7 @@ app.get('/pagecount', function (req, res) {
   }
 });
 
-
+var listofstock = [];
 app.get('/newscontent', function (req, res) {
   // try to initialize the db on every request if it's not already
   // initialized.
@@ -102,10 +102,25 @@ app.get('/newscontent', function (req, res) {
   }
   if (db) {
 
-  db.collection('news').find().limit(10).toArray(
-	function(err, docs){
-		console.log(docs);
+  db.collection('news').find().sort( { datetime: -1 } ).toArray(
+	function(err, docs){		
+		listofstock.push(docs);
+	
 	});
+      res.send(JSON.stringify(listofstock));
+  } else {
+    res.send('{ failed: -1 }');
+  }
+});
+
+app.get('/newscount', function (req, res) {
+  // try to initialize the db on every request if it's not already
+  // initialized.
+  if (!db) {
+    initDb(function(err){});
+  }
+  if (db) {
+
 	db.collection('news').count(function(err, count ){
       res.send('{ newCount: ' + count + '}');
     });
