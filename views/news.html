@@ -213,7 +213,50 @@ pre {
 
 </head>
 <body>
+<form>
+  <div class="form-group widget">
+    <label for="stockNo" class="col-sm-2 control-label">Stock No.</label>
+	<div class="col-sm-6">
+      <input type="number" class="form-control" id="stockNo" placeholder="">
+    </div>
+	<label for="type" class="col-sm-2 control-label">Type</label>
+	<div class="col-sm-6">
+      <input type="number" class="form-control" id="type" placeholder="">
+    </div>
+	
+	<div class="col-sm-4">
+		<button class="btn btn-default" id='add'>Add</button>
+		<button class="btn btn-default" id='clear'>Clear</button>
+		
+    </div>
+	  <label for="interval" class="col-sm-2 control-label">Interval</label>
+	<div class="col-sm-6">
+      <input type="number" class="form-control" id="interval" placeholder="">
+    </div>
+	
+	<div class="col-sm-4">
+		
+	<button class="btn btn-default" id='set'>Set</button>
+    </div>
+	
+	
+  </div>
+<br/><br/>
+  <div class="form-group widget">
+		<div id="block" class="">
+		</div>
+		<br/>
+		<br/>
+		<table  class='table'>
+		<tbody id="container">
+		<tr id="containerStart"><td>Stock No.</td><td>Price</td><td>Time</td></tr>
+	
+		</tbody>
+		</table>
+		</div>
+<div id="numberContr"></div>
 
+</form>
 <section class='container' id='content'>
        
 
@@ -228,11 +271,28 @@ var url = "http://nodejs-mongo-persistent-nodejs-1.1d35.starter-us-east-1.opensh
 
  
 $.get( url, function( data ) {
-console.log(data);
+//console.log(data);
 for (i = 0 ; i < data.length;i++){
  $( "#content" )
-    .append( "Stock: " + data[i].stockNo + " " + data[i].stockName + " " + "News: " + data[i].docName) // John
+    .append( "<div>Stock: " + data[i].stockNo + " " + data[i].stockName + " " + "News: " + data[i].docName + '</div>') // John
 }
 }, "json" );
+
+
+ $(function () {
+
+            $('#add').click(function () {
+				var type = $('#type').val();
+				
+				url = url + "?type=" + type;
+				$.get( url, function( data ) {
+				//console.log(data);
+				for (i = 0 ; i < data.length;i++){
+				 $( "#content" )
+					.append( "<div>Stock: " + data[i].stockNo + " " + data[i].stockName + " " + "News: " + data[i].docName + '</div>') // John
+				}
+				}, "json" );
+			})
+});
 </script>
 </html>
