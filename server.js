@@ -101,7 +101,7 @@ app.get('/newscontent', function (req, res) {
     initDb(function(err){});
   }
   if (db) {
-console.log(db.collection('news').find());
+console.log(db.collection('news').find({datetime: { $gt: 0 }}));
 	db.collection('news').count(function(err, count ){
       res.send('{ newCount: ' + count + '}');
     });
