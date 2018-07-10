@@ -102,8 +102,10 @@ app.get('/newscontent', function (req, res) {
   }
   if (db) {
 
-  db.collection('news').find().sort( { datetime: -1 } ).toArray(
-	function(err, docs){		
+  db.collection('news').find().limit(10).sort( { datetime: -1 } ).toArray(
+	function(err, docs){
+console.log(docs);
+console.log("===========================");		
 		listofstock.push(docs);
 	
 	});
