@@ -200,7 +200,7 @@ app.get('/scrape', function(req, res){
 			})
 		}
 		console.log(result);
-		res.send('Updated Stock News!')
+		res.send(JSON.stringify(result))
 	})
 })
 // error handling
