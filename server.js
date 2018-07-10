@@ -107,6 +107,7 @@ app.get('/newscontent', function (req, res) {
 		listofstock.push(docs);
 	
 	});
+	console.log(listofstock);
       res.send(JSON.stringify(listofstock));
   } else {
     res.send('{ failed: -1 }');
