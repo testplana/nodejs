@@ -101,7 +101,7 @@ app.get('/newscontent', function (req, res) {
     initDb(function(err){});
   }
   if (db) {
-
+console.log(db.collection('news').find());
 	db.collection('news').count(function(err, count ){
       res.send('{ newCount: ' + count + '}');
     });
@@ -200,7 +200,7 @@ app.get('/scrape', function(req, res){
 			})
 		}
 		console.log(result);
-		res.send(JSON.stringify(result))
+		res.send("Done")
 	})
 })
 // error handling
