@@ -114,14 +114,20 @@ app.get('/newscontent', function (req, res) {
 			res.send(JSON.stringify(docs));
 		});
 		
-	}else {
-		var param = '/.*' + req.query.data + '.*/';
-		console.log(param);
-		db.collection('news').find({"docName": param}).limit(10).sort( { datetime: -1 } ).toArray(
+	}else if (req.query.type == 2) {
+		//var param = ;
+		//console.log(param);
+		db.collection('news').find({"docName": /.*翌日.*/}).limit(10).sort( { datetime: -1 } ).toArray(
 		function(err, docs){
 			res.send(JSON.stringify(docs));
 		});
      
+	}else{
+		db.collection('news').find().limit(10).sort( { datetime: -1 } ).toArray(
+		function(err, docs){
+			res.send(JSON.stringify(docs));
+		});
+		
 	}
 
   } else {
