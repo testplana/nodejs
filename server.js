@@ -115,7 +115,8 @@ app.get('/newscontent', function (req, res) {
 		});
 		
 	}else {
-		db.collection('news').find().limit(10).sort( { datetime: -1 } ).toArray(
+		var param = '/.*' + req.query.data + '.*/';
+		db.collection('news').find({"docName": param}).sort( { datetime: -1 } ).toArray(
 		function(err, docs){
 			res.send(JSON.stringify(docs));
 		});
