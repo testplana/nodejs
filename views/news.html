@@ -213,23 +213,22 @@ pre {
 
 </head>
 <body>
-<form>
-  <div class="form-group widget">
-	<label for="type" class="col-sm-2 control-label">Type</label>
-	<div class="col-sm-6">
-      <input type="number" class="form-control" id="type" placeholder="">
-    </div>
-	
-	<div class="col-sm-4">
-		<button class="btn btn-default" id='add'>Add</button>
-		
-    </div>
 
-	
-  </div>
-</form>
-<section class='container' id='content'>
-       
+	<label for="type" class="col-sm-2 control-label">Type</label>
+    <input type="number" class="form-control" id="type" placeholder="">
+    <button class="btn btn-default" id='add'>Add</button>
+		
+
+<section class='container' >
+		<table id='content'>
+		<tr>
+		<td>Stock No.</td>
+		<td>Stock Name</td>
+		<td>Title</td>
+		<td>Document</td>
+		<td>Date</td>
+		</tr>
+		</table>
 
 </section>
 
@@ -245,7 +244,7 @@ $.get( url, function( data ) {
 //console.log(data);
 for (i = 0 ; i < data.length;i++){
  $( "#content" )
-    .append( "<div>Stock: " + data[i].stockNo + " " + data[i].stockName + " " + "News: " + data[i].docName + '</div>') // John
+    .append( "<tr><td>" + data[i].stockNo + "</td><td><a href='http://www.hkexnews.hk/'" + data[i].url + "'>"  + data[i].stockName + "</a></td><td>"  + data[i].docName  + "</td></tr>" ) // John
 }
 }, "json" );
 
