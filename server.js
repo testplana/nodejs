@@ -115,9 +115,9 @@ app.get('/newscontent', function (req, res) {
 		});
 		
 	}else if (req.query.type == 2) {
-		//var param = ;
+		var param = '/.*翌日.*/';
 		//console.log(param);
-		db.collection('news').find({"docName": /.*翌日.*/}).limit(10).sort( { datetime: -1 } ).toArray(
+		db.collection('news').find({"docName": param}).limit(10).sort( { datetime: -1 } ).toArray(
 		function(err, docs){
 			res.send(JSON.stringify(docs));
 		});
