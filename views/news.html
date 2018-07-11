@@ -244,7 +244,7 @@ $.get( url, function( data ) {
 //console.log(data);
 for (i = 0 ; i < data.length;i++){
  $( "#content" )
-    .append( "<tr><td>" + data[i].stockNo + "</td><td><a href='http://www.hkexnews.hk/'" + data[i].url + "'>"  + data[i].stockName + "</a></td><td>"  + data[i].docName  + "</td></tr>" ) // John
+    .append( "<tr><td>" + data[i].stockNo + "</td><td>" + data[i].stockName + "</td><td><a href='http://www.hkexnews.hk/" + data[i].docUrl + "'>"  + data[i].docName + "</a></td><td>"  + data[i].docName  + "</td><td>"  + data[i].datetime + "</td></tr>" ) // John
 }
 }, "json" );
 
