@@ -255,6 +255,25 @@ app.get('/scrape', function(req, res){
 		res.send("Done")
 	})
 })
+
+
+app.get('/scrapestock', function(req, res){
+	var yahoourl = 'https://hk.finance.yahoo.com/quote/0700.HK/history?p=0700.HK'
+	request(yahoourl, function(error, response, html){
+		if(!error){
+			var $ = cheerio.load(html);
+			
+			$('body').filter(function(){
+				var data = $(this);				
+				console.log(data);
+	
+			})
+			
+		}
+		
+		res.send("Done")
+	})
+})
 // error handling
 app.use(function(err, req, res, next){
   console.error(err.stack);
