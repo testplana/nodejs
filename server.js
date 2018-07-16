@@ -264,6 +264,8 @@ app.get('/scrapestock', function(req, res){
 			var $ = cheerio.load(html);
 			var table  = $('#tbQuote');
 			var rows = $(table).find("tr");
+				console.log(table);
+				console.log(rows);
 			for (var i = 0; i < 2; i++) {
 				var current = rows[i];
 				console.log(current);
