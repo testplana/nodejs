@@ -266,9 +266,9 @@ app.get('/scrapestock', function(req, res){
 			var rows = $(table).find("tr");
 			for (var i = 0; 10; i++) {
 				var current = rows[i];
-				var title =  $(current).children("td a").text();
-				var text =  $(current).children("td:nth-child(2)").text();
-				console.log(title + " " + text + "\n");
+				//var title =  $(current).children("td a").text();
+				//var text =  $(current).children("td:nth-child(2)").text();
+				console.log(current);
 			}
 			
 			/*$('.BdT').filter(function(){
