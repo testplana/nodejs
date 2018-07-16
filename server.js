@@ -262,12 +262,21 @@ app.get('/scrapestock', function(req, res){
 	request(yahoourl, function(error, response, html){
 		if(!error){
 			var $ = cheerio.load(html);
+			var table  = $('table[data-test="historical-prices"]');
+			var rows = $(table).find("tr");
+			for (var i = 0; rows.length; i++) {
+				var current = rows[i];
+				var title =  $(current).children("td a").text();
+				var text = current.children("td:nth-child(2)").text();
+				console.log(title + " " + text + "\n");
+			}
 			
-			$('.BdT').filter(function(){
-				var data = $(this);				
+			/*$('.BdT').filter(function(){
+				var data = $(this);		
+				for 
 				console.log(data);
 	
-			})
+			})*/
 			
 		}
 		
