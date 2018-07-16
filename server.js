@@ -264,11 +264,11 @@ app.get('/scrapestock', function(req, res){
 			var $ = cheerio.load(html);
 			var table  = $('table[data-test="historical-prices"]');
 			var rows = $(table).find("tr");
-			for (var i = 0; 10; i++) {
+			for (var i = 0; 2; i++) {
 				var current = rows[i];
-				//var title =  $(current).children("td a").text();
+				var title =  $(current).children("td span").text();
 				//var text =  $(current).children("td:nth-child(2)").text();
-				console.log(current);
+				console.log(title);
 			}
 			
 			/*$('.BdT').filter(function(){
