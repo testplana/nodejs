@@ -262,13 +262,21 @@ app.get('/scrapestock', function(req, res){
 	request(stockurl, function(error, response, html){
 		if(!error){
 			var $ = cheerio.load(html);
+			var table  = $('#tbQuote');
+			var rows = $(table).find("tr");
+			for (var i = 0; 2; i++) {
+				var current = rows[i];
+				var title =  $(current).children("td div").text();
+				//var text =  $(current).children("td:nth-child(2)").text();
+				console.log(title);
+			}
 			
-			$('.colPrevClose').filter(function(){
+			/*$('.BdT').filter(function(){
 				var data = $(this);		
-			
+				for 
 				console.log(data);
 	
-			})
+			})*/
 			
 		}
 		
