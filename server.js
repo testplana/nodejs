@@ -258,25 +258,17 @@ app.get('/scrape', function(req, res){
 
 
 app.get('/scrapestock', function(req, res){
-	var yahoourl = 'https://hk.finance.yahoo.com/quote/0700.HK/history?p=0700.HK'
-	request(yahoourl, function(error, response, html){
+	var stockurl = 'http://www.aastocks.com/tc/stocks/quote/detail-quote.aspx?symbol=00001'
+	request(stockurl, function(error, response, html){
 		if(!error){
 			var $ = cheerio.load(html);
-			var table  = $('table[data-test="historical-prices"]');
-			var rows = $(table).find("tr");
-			for (var i = 0; 2; i++) {
-				var current = rows[i];
-				var title =  $(current).children("td span").text();
-				//var text =  $(current).children("td:nth-child(2)").text();
-				console.log(title);
-			}
 			
-			/*$('.BdT').filter(function(){
+			$('.colPrevClose').filter(function(){
 				var data = $(this);		
-				for 
+			
 				console.log(data);
 	
-			})*/
+			})
 			
 		}
 		
