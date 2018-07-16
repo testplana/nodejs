@@ -263,7 +263,7 @@ app.get('/scrapestock', function(req, res){
 		if(!error){
 			var $ = cheerio.load(html);
 			
-			$('body').filter(function(){
+			$('.BdT').filter(function(){
 				var data = $(this);				
 				console.log(data);
 	
