@@ -266,7 +266,8 @@ app.get('/scrapestock', function(req, res){
 			var rows = $(table).find("tr");
 			for (var i = 0; i < 2; i++) {
 				var current = rows[i];
-				var title =  $(current).children("td div").text();
+				console.log(current);
+				var title =  $(current).children().text();
 				//var text =  $(current).children("td:nth-child(2)").text();
 				console.log(title);
 			}
