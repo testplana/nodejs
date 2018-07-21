@@ -262,7 +262,7 @@ app.get('/scrapestock', function(req, res){
 	request(stockurl, function(error, response, html){
 		if(!error){
 			var $ = cheerio.load(html);
-			var table  = $('#StkDetailMainBox');
+			var table  = $('#StkDetailMainBox table tr').children();
 			var rows = $(table).find("tr");
 				console.log(table);
 				console.log(rows);
