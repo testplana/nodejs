@@ -239,7 +239,7 @@ app.get('/scrape', function(req, res){
 	request(url, function(error, response, html){
 		if(!error){
 			var $ = cheerio.load(html);
-			
+			console.log(html);
 			$('.row1').filter(function(){
 				var data = $(this);				
 				uploadToDB(data);
@@ -262,6 +262,7 @@ app.get('/scrapestock', function(req, res){
 	request(stockurl, function(error, response, html){
 		if(!error){
 			var $ = cheerio.load(html);
+			console.log(html);
 			var table  = $('#StkDetailMainBox table tr').children();
 			var rows = $(table).find("tr");
 				console.log(table);
