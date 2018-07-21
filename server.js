@@ -258,23 +258,23 @@ app.get('/scrape', function(req, res){
 
 
 app.get('/scrapestock', function(req, res){
-	var stockurl = 'http://www.etnet.com.hk/www/tc/stocks/realtime/quote.php?code=00700'
+	var stockurl = 'https://finance.yahoo.com/quote/0700.HK?p=0700.HK&.tsrc=fin-srch'
 	request(stockurl, function(error, response, html){
 		if(!error){
 			var $ = cheerio.load(html);
 			console.log(html);
-			var table  = $('#StkDetailMainBox table tr').children();
+			var table  = $('[data-test="AVERAGE_VOLUME_3MONTH-value"]')
 			var rows = $(table).find("tr");
 				console.log(table);
-				console.log(rows);
-			for (var i = 0; i < 2; i++) {
+			//	console.log(rows);
+			/*for (var i = 0; i < 2; i++) {
 				var current = rows[i];
 				console.log(current);
 				var title =  $(current).children().text();
 				//var text =  $(current).children("td:nth-child(2)").text();
 				console.log(title);
 			}
-			
+			*/
 			/*$('.BdT').filter(function(){
 				var data = $(this);		
 				for 
