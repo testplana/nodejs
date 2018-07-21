@@ -264,9 +264,9 @@ app.get('/scrapestock', function(req, res){
 			var $ = cheerio.load(html);
 			console.log(html);
 			var table  = $('[data-test="AVERAGE_VOLUME_3MONTH-value"]')
-			var rows = $(table).find("tr");
+			var rows = $(table).text();
 				console.log(table);
-			//	console.log(rows);
+				console.log(rows);
 			/*for (var i = 0; i < 2; i++) {
 				var current = rows[i];
 				console.log(current);
