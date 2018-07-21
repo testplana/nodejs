@@ -258,11 +258,11 @@ app.get('/scrape', function(req, res){
 
 
 app.get('/scrapestock', function(req, res){
-	var stockurl = 'http://www.aastocks.com/tc/stocks/quote/detail-quote.aspx?symbol=00001'
+	var stockurl = 'http://www.etnet.com.hk/www/tc/stocks/realtime/quote.php?code=00700'
 	request(stockurl, function(error, response, html){
 		if(!error){
 			var $ = cheerio.load(html);
-			var table  = $('#tbQuote');
+			var table  = $('#StkDetailMainBox');
 			var rows = $(table).find("tr");
 				console.log(table);
 				console.log(rows);
