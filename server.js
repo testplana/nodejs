@@ -186,7 +186,7 @@ app.get('/datacount', function (req, res) {
     res.send('{ failed: -1 }');
   }
 });
-app.get('/datadelate', function (req, res) {
+app.get('/datadelete', function (req, res) {
   // try to initialize the db on every request if it's not already
   // initialized.
   if (!db) {
@@ -311,11 +311,11 @@ app.get('/scrapestock', function(req, res){
 				stockNo: stockNo,
 				datetime: datetime,
 				OPEN: OPEN,
-				CLOSE: CLOSE,
+				//CLOSE: CLOSE,
 				DAYS_RANGE: DAYS_RANGE,
 				PREV_CLOSE: PREV_CLOSE,
 				TD_VOLUME: TD_VOLUME,							
-				TD_CHANGE: TD_CHANGE,
+				//TD_CHANGE: TD_CHANGE,
 				FIFTY_TWO_WK_RANGE: FIFTY_TWO_WK_RANGE,
 				AVERAGE_VOLUME_3MONTH: AVERAGE_VOLUME_3MONTH
 			})
