@@ -282,9 +282,11 @@ app.get('/scrapestock', function(req, res){
 	function(err, docs){		
 		for (i = 0 ; i < docs.length;i++){
 			var stockNo = docs[i].stockNo;
+			console.log(stockNo);
 			//if (stockNo.length==5){
 				stockNo = stockNo.substring(1,5);
 				var stockurl = 'https://finance.yahoo.com/quote/' + stockNo + '.HK?p=' + stockNo + '.HK&.tsrc=fin-srch';
+				console.log(stockurl);
 				request(stockurl, function(error, response, html){
 					if(!error){
 						var $ = cheerio.load(html);
@@ -313,8 +315,7 @@ app.get('/scrapestock', function(req, res){
 							AVERAGE_VOLUME_3MONTH: AVERAGE_VOLUME_3MONTH
 						})
 					}
-					console.log(result);
-					res.send("Done")
+				
 				})
 			//}
 		}
