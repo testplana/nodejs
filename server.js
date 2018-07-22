@@ -302,7 +302,7 @@ app.get('/scrapestock', function(req, res){
 						var datetime = +new Date();
 						var stock = db.collection('stock');
 						stock.insert({
-							_id: new Date().getFullYear()+''+(new Date().getMonth()+1)+''+ new Date().getDate() + stockNo,
+							_id: datetime+stockNo,
 							stockNo: stockNo,
 							datetime: datetime,
 							OPEN: OPEN,
