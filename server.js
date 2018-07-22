@@ -109,7 +109,7 @@ app.get('/newscontent', function (req, res) {
   }
   if (db) {
 	if (req.query.type == 1){
-		db.collection('news-type1').find().limit(10).sort( { datetime: -1 } ).toArray(
+		db.collection('news-type1').find().limit(100).sort( { datetime: -1 } ).toArray(
 		function(err, docs){
 			res.send(JSON.stringify(docs));
 		});
@@ -117,18 +117,37 @@ app.get('/newscontent', function (req, res) {
 	}else if (req.query.type == 2) {
 		var param = new RegExp('/.*' + '翌日' + '.*/');
 		//console.log(param);
-		db.collection('news').find({"docName": param}).limit(10).sort( { datetime: -1 } ).toArray(
+		db.collection('news').find({"docName": param}).limit(100).sort( { datetime: -1 } ).toArray(
 		function(err, docs){
 			res.send(JSON.stringify(docs));
 		});
      
 	}else{
-		db.collection('news').find().limit(10).sort( { datetime: -1 } ).toArray(
+		db.collection('news').find().limit(100).sort( { datetime: -1 } ).toArray(
 		function(err, docs){
 			res.send(JSON.stringify(docs));
 		});
 		
 	}
+
+  } else {
+    res.send('{ failed: -1 }');
+  }
+});
+
+app.get('/data', function (req, res) {
+  // try to initialize the db on every request if it's not already
+  // initialized.
+  if (!db) {
+    initDb(function(err){});
+  }
+  if (db) {
+
+		db.collection(req.query.data).find().limit(100).sort( { datetime: -1 } ).toArray(
+		function(err, docs){
+			res.send(JSON.stringify(docs));
+		});
+		
 
   } else {
     res.send('{ failed: -1 }');
@@ -151,8 +170,7 @@ app.get('/newscount', function (req, res) {
     res.send('{ failed: -1 }');
   }
 });
-
-app.get('/newsdelete', function (req, res) {
+app.get('/datacount', function (req, res) {
   // try to initialize the db on every request if it's not already
   // initialized.
   if (!db) {
@@ -160,7 +178,22 @@ app.get('/newsdelete', function (req, res) {
   }
   if (db) {
 
-	db.collection('news').remove( { } );
+	db.collection(req.query.data).count(function(err, count ){
+      res.send('{ count: ' + count + '}');
+    });
+		
+  } else {
+    res.send('{ failed: -1 }');
+  }
+});
+app.get('/datadelate', function (req, res) {
+  // try to initialize the db on every request if it's not already
+  // initialized.
+  if (!db) {
+    initDb(function(err){});
+  }
+  if (db) {
+	db.collection(req.query.data).remove( { } );
 	res.send('{ removed: 1 }');	
   } else {
     res.send('{ failed: -1 }');
@@ -239,7 +272,7 @@ app.get('/scrape', function(req, res){
 	request(url, function(error, response, html){
 		if(!error){
 			var $ = cheerio.load(html);
-			console.log(html);
+			
 			$('.row1').filter(function(){
 				var data = $(this);				
 				uploadToDB(data);
@@ -256,36 +289,36 @@ app.get('/scrape', function(req, res){
 	})
 })
 
-
 app.get('/scrapestock', function(req, res){
 	var stockurl = 'https://finance.yahoo.com/quote/0700.HK?p=0700.HK&.tsrc=fin-srch'
 	request(stockurl, function(error, response, html){
 		if(!error){
 			var $ = cheerio.load(html);
-			console.log(html);
-			var table  = $('[data-test="AVERAGE_VOLUME_3MONTH-value"]')
-			var rows = $(table).text();
-				console.log(table);
-				console.log(rows);
-			/*for (var i = 0; i < 2; i++) {
-				var current = rows[i];
-				console.log(current);
-				var title =  $(current).children().text();
-				//var text =  $(current).children("td:nth-child(2)").text();
-				console.log(title);
-			}
-			*/
-			/*$('.BdT').filter(function(){
-				var data = $(this);		
-				for 
-				console.log(data);
-	
-			})*/
-			
+			var PREV_CLOSE  = $('[data-test="PREV_CLOSE-value"]').text();
+			var AVERAGE_VOLUME_3MONTH  = $('[data-test="AVERAGE_VOLUME_3MONTH-value"]').text();
+			var OPEN  = $('[data-test="OPEN-value"]').text();
+			var CLOSE = $('[data-reactid="35"]').text();
+			var DAYS_RANGE = $('[data-test="DAYS_RANGE-value"]').text();
+			var FIFTY_TWO_WK_RANGE = $('[data-test="FIFTY_TWO_WK_RANGE-value"]').text();
+			var TD_VOLUME = $('[data-test="TD_VOLUME-value"]').text();
+			var TD_CHANGE = $('[data-reactid="36"]').text();
+			var datetime = +new Date();
+			var stock = db.collection('stock');
+			stock.insert({
+				_id: datetime + stockNo,
+				datetime: datetime,
+				OPEN: OPEN,
+				CLOSE: CLOSE,
+				DAYS_RANGE: DAYS_RANGE,
+				PREV_CLOSE: PREV_CLOSE,
+				TD_VOLUME: TD_VOLUME,							
+				TD_CHANGE: TD_CHANGE,
+				FIFTY_TWO_WK_RANGE: FIFTY_TWO_WK_RANGE,
+				AVERAGE_VOLUME_3MONTH: AVERAGE_VOLUME_3MONTH
+			})
 		}
 		
 		res.send("Done")
-	})
 })
 // error handling
 app.use(function(err, req, res, next){
