@@ -299,11 +299,11 @@ app.get('/scrapestock', function(req, res){
 			var PREV_CLOSE  = $('[data-test="PREV_CLOSE-value"]').text();
 			var AVERAGE_VOLUME_3MONTH  = $('[data-test="AVERAGE_VOLUME_3MONTH-value"]').text();
 			var OPEN  = $('[data-test="OPEN-value"]').text();
-			var CLOSE = $('[data-reactid="35"]').text();
+			var CLOSE = $('span[data-reactid="35"]').text();
 			var DAYS_RANGE = $('[data-test="DAYS_RANGE-value"]').text();
 			var FIFTY_TWO_WK_RANGE = $('[data-test="FIFTY_TWO_WK_RANGE-value"]').text();
 			var TD_VOLUME = $('[data-test="TD_VOLUME-value"]').text();
-			var TD_CHANGE = $('[data-reactid="36"]').text();
+			var TD_CHANGE = $('span[data-reactid="36"]:contains("%")').text();
 			var datetime = +new Date();
 			var stock = db.collection('stock');
 			stock.insert({
@@ -311,11 +311,11 @@ app.get('/scrapestock', function(req, res){
 				stockNo: stockNo,
 				datetime: datetime,
 				OPEN: OPEN,
-				//CLOSE: CLOSE,
+				CLOSE: CLOSE,
 				DAYS_RANGE: DAYS_RANGE,
 				PREV_CLOSE: PREV_CLOSE,
 				TD_VOLUME: TD_VOLUME,							
-				//TD_CHANGE: TD_CHANGE,
+				TD_CHANGE: TD_CHANGE,
 				FIFTY_TWO_WK_RANGE: FIFTY_TWO_WK_RANGE,
 				AVERAGE_VOLUME_3MONTH: AVERAGE_VOLUME_3MONTH
 			})
