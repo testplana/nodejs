@@ -108,16 +108,11 @@ app.get('/newscontent', function (req, res) {
     initDb(function(err){});
   }
   if (db) {
-	if (req.query.type == 1){
-		db.collection('news-type1').find().limit(100).sort( { datetime: -1 } ).toArray(
-		function(err, docs){
-			res.send(JSON.stringify(docs));
-		});
+	if (req.query.type == 2) {
 		
-	}else if (req.query.type == 2) {
-		var param = new RegExp('/.*' + '翌日' + '.*/');
-		//console.log(param);
-		db.collection('news').find({"docName": param}).limit(100).sort( { datetime: -1 } ).toArray(
+		db.collection('news').find(
+			{'docName': {'$regex': '翌日', '$options': 'i'}}
+		).limit(100).sort( { datetime: -1 } ).toArray(
 		function(err, docs){
 			res.send(JSON.stringify(docs));
 		});
@@ -254,7 +249,7 @@ var uploadToDB = function(data){
 		docName: docName,
 		docUrl: docUrl	
 	})	
-	var type1 = db.collection('news-type1');
+	/*var type1 = db.collection('news-type1');
 	if (docName.indexOf('股份購回') > 0){
 		type1.insert({
 		   _id: datetime+stockNo,
@@ -264,7 +259,7 @@ var uploadToDB = function(data){
 			docName: docName,
 			docUrl: docUrl	
 		})			
-	}
+	}*/
 	
 	
 }
