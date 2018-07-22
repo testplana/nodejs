@@ -188,7 +188,7 @@ app.get('/datadelete', function (req, res) {
   if (!db) {
     initDb(function(err){});
   }
-  var invalidDelete = ['news', 'stock'];
+  var invalidDelete = ['news'];
   if (db && invalidDelete.indexOf(req.query.data) == -1) {
 	db.collection(req.query.data).remove( { } );
 	res.send('{ removed: 1 }');	
@@ -290,7 +290,8 @@ app.get('/scrapestock', function(req, res){
 				request(stockurl, function(error, response, html){
 					if(!error){
 						var $ = cheerio.load(html);
-						
+						var STOCK_NAME_NUMBER = $('h1[data-reactid="7"]').text();
+						var STOCK_NO = STOCK_NAME_NUMBER.substring(STOCK_NAME_NUMBER.indexOf('('), STOCK_NAME_NUMBER.length - 1).replace('(','');
 						var PREV_CLOSE  = $('[data-test="PREV_CLOSE-value"]').text();
 						var AVERAGE_VOLUME_3MONTH  = $('[data-test="AVERAGE_VOLUME_3MONTH-value"]').text();
 						var OPEN  = $('[data-test="OPEN-value"]').text();
@@ -302,8 +303,9 @@ app.get('/scrapestock', function(req, res){
 						var datetime = +new Date();
 						var stock = db.collection('stock');
 						stock.insert({
-							_id: datetime+stockNo,
-							stockNo: stockNo,
+							_id: datetime+STOCK_NO,
+							stockNo: STOCK_NO,
+							stockName:STOCK_NAME_NUMBER,
 							datetime: datetime,
 							OPEN: OPEN,
 							CLOSE: CLOSE,
