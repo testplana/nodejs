@@ -278,7 +278,7 @@ app.get('/scrapestock', function(req, res){
 	var date = new Date();
 	date.setDate(date.getDate() - 14);
 
-	db.collection('news').find().limit(1000).sort( { datetime: -1 } ).toArray(
+	db.collection('news').find().limit(100).sort( { datetime: -1 } ).toArray(
 	function(err, docs){		
 		for (i = 0 ; i < docs.length;i++){
 			var stockNo = docs[i].stockNo;
@@ -302,7 +302,7 @@ app.get('/scrapestock', function(req, res){
 						var datetime = +new Date();
 						var stock = db.collection('stock');
 						stock.insert({
-							_id: datetime + stockNo,
+							_id: new Date().getFullYear()+''+(new Date().getMonth()+1)+''+ new Date().getDate() + stockNo,
 							stockNo: stockNo,
 							datetime: datetime,
 							OPEN: OPEN,
@@ -318,9 +318,11 @@ app.get('/scrapestock', function(req, res){
 				
 				})
 			//}
+			
 		}
+		res.send("Done " + docs.length);
 	});
-	res.send("Done without update");
+	
 	
 })
 
