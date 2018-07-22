@@ -112,7 +112,6 @@ app.get('/newscontent', function (req, res) {
 		db.collection('news').find(
 			$or: [ {'docName': {'$regex': req.query.data, '$options': 'i'}}
 			, { 'stockNo': {'$regex': req.query.data, '$options': 'i'} }
-			, { 'stockName': {'$regex': req.query.data, '$options': 'i'} }
 			]  
 		).limit(100).sort( { datetime: -1 } ).toArray(
 		function(err, docs){
@@ -188,7 +187,8 @@ app.get('/datadelete', function (req, res) {
   if (!db) {
     initDb(function(err){});
   }
-  if (db) {
+  var invalidDelete = ['news', 'stock'];
+  if (db && invalidDelete.indexOf(req.query.data) == -1) {
 	db.collection(req.query.data).remove( { } );
 	res.send('{ removed: 1 }');	
   } else {
