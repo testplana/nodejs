@@ -291,7 +291,7 @@ app.get('/scrape', function(req, res){
 
 app.get('/scrapestock', function(req, res){
 	var stockNo = req.query.stockNo;
-	var stockurl = 'https://finance.yahoo.com/quote/' + 'stockNo' + '.HK?p=' + stockNo + '.HK&.tsrc=fin-srch';
+	var stockurl = 'https://finance.yahoo.com/quote/' + stockNo + '.HK?p=' + stockNo + '.HK&.tsrc=fin-srch';
 	request(stockurl, function(error, response, html){
 		if(!error){
 			var $ = cheerio.load(html);
