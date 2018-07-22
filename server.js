@@ -110,9 +110,10 @@ app.get('/newscontent', function (req, res) {
   if (db) {
 	if (req.query.action == 'search') {		
 		db.collection('news').find(
-			$or: [ {'docName': {'$regex': req.query.data, '$options': 'i'}}
-			, { 'stockNo': {'$regex': req.query.data, '$options': 'i'} }
-			]  
+			{$or: [ {'docName': {'$regex': req.query.data, '$options': 'i'}}
+				, { 'stockNo': {'$regex': req.query.data, '$options': 'i'} }
+				, { 'stockName': {'$regex': req.query.data, '$options': 'i'} }
+			]}  
 		).limit(100).sort( { datetime: -1 } ).toArray(
 		function(err, docs){
 			res.send(JSON.stringify(docs));
