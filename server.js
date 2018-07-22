@@ -278,20 +278,59 @@ app.get('/scrapestock', function(req, res){
 	var date = new Date();
 	date.setDate(date.getDate() - 14);
 
-	db.collection('news').distinct( "stockNo" ).toArray(
+	db.collection('news').find().limit(1000).sort( { datetime: -1 } ).toArray(
 	function(err, docs){		
-		//console.log(docs);
 		for (i = 0 ; i < docs.length;i++){
-			console.log(i + ': ' + docs[i].stockNo);
+			var stockNo = docs[i].stockNo;
+			if (stockNo.length==5){
+				stockNo = stockNo.substring(1,5);
+				var stockurl = 'https://finance.yahoo.com/quote/' + stockNo + '.HK?p=' + stockNo + '.HK&.tsrc=fin-srch';
+				request(stockurl, function(error, response, html){
+					if(!error){
+						var $ = cheerio.load(html);
+						
+						var PREV_CLOSE  = $('[data-test="PREV_CLOSE-value"]').text();
+						var AVERAGE_VOLUME_3MONTH  = $('[data-test="AVERAGE_VOLUME_3MONTH-value"]').text();
+						var OPEN  = $('[data-test="OPEN-value"]').text();
+						var CLOSE = $('span[data-reactid="35"]').text();
+						var DAYS_RANGE = $('[data-test="DAYS_RANGE-value"]').text();
+						var FIFTY_TWO_WK_RANGE = $('[data-test="FIFTY_TWO_WK_RANGE-value"]').text();
+						var TD_VOLUME = $('[data-test="TD_VOLUME-value"]').text();
+						var TD_CHANGE = $('span[data-reactid="36"]:contains("%")').text();
+						var datetime = +new Date();
+						var stock = db.collection('stock');
+						stock.insert({
+							_id: datetime + stockNo,
+							stockNo: stockNo,
+							datetime: datetime,
+							OPEN: OPEN,
+							CLOSE: CLOSE,
+							DAYS_RANGE: DAYS_RANGE,
+							PREV_CLOSE: PREV_CLOSE,
+							TD_VOLUME: TD_VOLUME,							
+							TD_CHANGE: TD_CHANGE,
+							FIFTY_TWO_WK_RANGE: FIFTY_TWO_WK_RANGE,
+							AVERAGE_VOLUME_3MONTH: AVERAGE_VOLUME_3MONTH
+						})
+					}
+					console.log(result);
+					res.send("Done")
+				})
+			}
 		}
 	});
 	res.send("Done");
-	/*var stockNo = req.query.stockNo;
+	
+})
+
+app.get('/scrapeonestock', function(req, res){
+	
+	var stockNo = req.query.stockNo;
 	var stockurl = 'https://finance.yahoo.com/quote/' + stockNo + '.HK?p=' + stockNo + '.HK&.tsrc=fin-srch';
 	request(stockurl, function(error, response, html){
 		if(!error){
 			var $ = cheerio.load(html);
-			
+					
 			var PREV_CLOSE  = $('[data-test="PREV_CLOSE-value"]').text();
 			var AVERAGE_VOLUME_3MONTH  = $('[data-test="AVERAGE_VOLUME_3MONTH-value"]').text();
 			var OPEN  = $('[data-test="OPEN-value"]').text();
@@ -318,7 +357,9 @@ app.get('/scrapestock', function(req, res){
 		}
 		console.log(result);
 		res.send("Done")
-	})*/
+	})
+	
+	
 })
 
 // error handling
