@@ -280,9 +280,9 @@ app.get('/scrapestock', function(req, res){
 
 	db.collection('news').find({'datetime': { $gt: date }}).limit(100).sort( { datetime: -1 } ).toArray(
 	function(err, docs){		
-		var data = JSON.stringify(docs)
-		for (i = 0 ; i < data.length;i++){
-			console.log(data[i].stockNo);
+		docs
+		for (i = 0 ; i < docs.length;i++){
+			console.log(docs[i].stockNo);
 		}
 	});
 	res.send("Done");
