@@ -278,7 +278,7 @@ app.get('/scrapestock', function(req, res){
 	var date = new Date();
 	date.setDate(date.getDate() - 14);
 
-	db.collection('news').limit(1000).sort( { datetime: -1 } ).toArray(
+	db.collection('news').find().limit(1000).sort( { datetime: -1 } ).toArray(
 	function(err, docs){		
 		//console.log(docs);
 		for (i = 0 ; i < docs.length;i++){
