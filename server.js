@@ -288,8 +288,10 @@ app.get('/scrape', function(req, res){
 		res.send("Done")
 	})
 })
-var stockurl = 'https://finance.yahoo.com/quote/0700.HK?p=0700.HK&.tsrc=fin-srch'
+
 app.get('/scrapestock', function(req, res){
+	var stockNo = req.query.stockNo;
+	var stockurl = 'https://finance.yahoo.com/quote/' + 'stockNo' + '.HK?p=' + stockNo + '.HK&.tsrc=fin-srch';
 	request(stockurl, function(error, response, html){
 		if(!error){
 			var $ = cheerio.load(html);
@@ -306,6 +308,7 @@ app.get('/scrapestock', function(req, res){
 			var stock = db.collection('stock');
 			stock.insert({
 				_id: datetime + stockNo,
+				stockNo: stockNo,
 				datetime: datetime,
 				OPEN: OPEN,
 				CLOSE: CLOSE,
