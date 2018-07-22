@@ -282,7 +282,7 @@ app.get('/scrapestock', function(req, res){
 	function(err, docs){		
 		for (i = 0 ; i < docs.length;i++){
 			var stockNo = docs[i].stockNo;
-			if (stockNo.length==5){
+			//if (stockNo.length==5){
 				stockNo = stockNo.substring(1,5);
 				var stockurl = 'https://finance.yahoo.com/quote/' + stockNo + '.HK?p=' + stockNo + '.HK&.tsrc=fin-srch';
 				request(stockurl, function(error, response, html){
@@ -316,10 +316,10 @@ app.get('/scrapestock', function(req, res){
 					console.log(result);
 					res.send("Done")
 				})
-			}
+			//}
 		}
 	});
-	res.send("Done");
+	res.send("Done without update");
 	
 })
 
