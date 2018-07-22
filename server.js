@@ -108,10 +108,12 @@ app.get('/newscontent', function (req, res) {
     initDb(function(err){});
   }
   if (db) {
-	if (req.query.type == 2) {
-		
+	if (req.query.action == 'search') {		
 		db.collection('news').find(
-			{'docName': {'$regex': '翌日', '$options': 'i'}}
+			$or: [ {'docName': {'$regex': req.query.data, '$options': 'i'}}
+			, { 'stockNo': {'$regex': req.query.data, '$options': 'i'} }
+			, { 'stockName': {'$regex': req.query.data, '$options': 'i'} }
+			]  
 		).limit(100).sort( { datetime: -1 } ).toArray(
 		function(err, docs){
 			res.send(JSON.stringify(docs));
@@ -122,7 +124,6 @@ app.get('/newscontent', function (req, res) {
 		function(err, docs){
 			res.send(JSON.stringify(docs));
 		});
-		
 	}
 
   } else {
@@ -249,19 +250,6 @@ var uploadToDB = function(data){
 		docName: docName,
 		docUrl: docUrl	
 	})	
-	/*var type1 = db.collection('news-type1');
-	if (docName.indexOf('股份購回') > 0){
-		type1.insert({
-		   _id: datetime+stockNo,
-			datetime: datetime,
-			stockNo: stockNo,
-			stockName: stockName,
-			docName: docName,
-			docUrl: docUrl	
-		})			
-	}*/
-	
-	
 }
 app.get('/scrape', function(req, res){
 	request(url, function(error, response, html){
@@ -285,7 +273,16 @@ app.get('/scrape', function(req, res){
 })
 
 app.get('/scrapestock', function(req, res){
-	var stockNo = req.query.stockNo;
+	
+	var date = new Date();
+	date.setDate(date.getDate() - 14);
+
+	db.collection('news').find({'datetime': { $gt: date }}).limit(100).sort( { datetime: -1 } ).toArray(
+	function(err, docs){
+		console.log(docs.stockNo);
+	});
+	res.send("Done");
+	/*var stockNo = req.query.stockNo;
 	var stockurl = 'https://finance.yahoo.com/quote/' + stockNo + '.HK?p=' + stockNo + '.HK&.tsrc=fin-srch';
 	request(stockurl, function(error, response, html){
 		if(!error){
@@ -317,7 +314,7 @@ app.get('/scrapestock', function(req, res){
 		}
 		console.log(result);
 		res.send("Done")
-	})
+	})*/
 })
 
 // error handling
