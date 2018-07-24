@@ -242,17 +242,17 @@ var url = "http://nodejs-mongo-persistent-nodejs-1.1d35.starter-us-east-1.opensh
 $.get( url, function( data ) {
 //console.log(data);
 for (i = 0 ; i < data.length;i++){
-	if (data[i].docName && data[i].docName != ''){
-		$( "#content" ).append( "<div id='" + data[i].stockNo +"'><div>" + data[i].stockNo + "</div><div>" + data[i].stockName + "</div><div><a href='http://www.hkexnews.hk/" + data[i].docUrl + "'>"  + data[i].docName + "</a></div><div>"   + data[i].datetime + "</div></div>" ) // John
-		//$( "#content" ).append( "<tr><td>" + data[i].stockNo + "</td><td>" + data[i].stockName + "</td><td><a href='http://www.hkexnews.hk/" + data[i].docUrl + "'>"  + data[i].docName + "</a></td><td>"   + data[i].datetime + "</td></tr>" ) // John
+	var news = data[i][0];
+	var stock = data[i][1];
+	var html = ( "<div id='" + news.stockNo +"'><div>" + news.stockNo + "</div><div>" + news.stockName + "</div><div><a href='http://www.hkexnews.hk/" + news.docUrl + "'>"  + news.docName + "</a></div><div>"   + news.datetime + "</div>" );
+	for (var j = 0 ; j < stock.length; j++){
+		html += ( "<div>" + new Date(stock[i].datetime) + "</div><div>"  + stock[i].OPEN + "</div><div>" + stock[i].CLOSE + "</div>" );
 	}
+	html += '</div>'
+	$( "#content" ).append(html);
+	
 }
-for (i = 0 ; i < data.length;i++){
-	if (!data[i].docName || data[i].docName == ''){
-		for (j = 0; j < data[i].length; j++)
-			$( "#'" + data[i].stockNo +"'" ).append( "<div><div>" + new Date(data[i].datetime) + "</div><div>" + data[i].OPEN + "</div><div>" + data[i].CLOSE  + "</div><div>"   + data[i].DAYS_RANGE + "</div></div>" ) // John
-	}
-}
+
 }, "json" );
 
 
