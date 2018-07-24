@@ -220,7 +220,7 @@ pre {
 		
 
 <section class='container' >
-		<table id='content'>
+		<!--<table id='content'>
 		<tr>
 		<td>Stock No.</td>
 		<td>Stock Name</td>
@@ -228,7 +228,8 @@ pre {
 		<td>Date</td>
 		</tr>
 		</table>
-
+-->
+<div id='content'> </div>
 </section>
 
 </body>
@@ -236,27 +237,26 @@ pre {
 
 <script>
 
-var url = "http://nodejs-mongo-persistent-nodejs-1.1d35.starter-us-east-1.openshiftapps.com/data?data=news";
-
- 
-$.get( url, function( data ) {
-//console.log(data);
-for (i = 0 ; i < data.length;i++){
- $( "#content" )
-    .append( "<tr><td>" + data[i].stockNo + "</td><td>" + data[i].stockName + "</td><td><a href='http://www.hkexnews.hk/" + data[i].docUrl + "'>"  + data[i].docName + "</a></td><td>"   + data[i].datetime + "</td></tr>" ) // John
-}
-}, "json" );
-
 var url = "http://nodejs-mongo-persistent-nodejs-1.1d35.starter-us-east-1.openshiftapps.com/newscontent";
 
- 
 $.get( url, function( data ) {
 //console.log(data);
 for (i = 0 ; i < data.length;i++){
- $( "#content" )
-    .append( "<tr><td>" + data[i].stockNo + "</td><td>" + data[i].stockName + "</td><td><a href='http://www.hkexnews.hk/" + data[i].docUrl + "'>"  + data[i].docName + "</a></td><td>"   + data[i].datetime + "</td></tr>" ) // John
+	if (data[i].docName && data[i].docName != ''){
+		$( "#content" ).append( "<div id='" + data[i].stockNo +"'><div>" + data[i].stockNo + "</div><div>" + data[i].stockName + "</div><div><a href='http://www.hkexnews.hk/" + data[i].docUrl + "'>"  + data[i].docName + "</a></div><div>"   + data[i].datetime + "</div></div>" ) // John
+		//$( "#content" ).append( "<tr><td>" + data[i].stockNo + "</td><td>" + data[i].stockName + "</td><td><a href='http://www.hkexnews.hk/" + data[i].docUrl + "'>"  + data[i].docName + "</a></td><td>"   + data[i].datetime + "</td></tr>" ) // John
+	}
+}
+for (i = 0 ; i < data.length;i++){
+	if (!data[i].docName || data[i].docName == ''){
+		for (j = 0; j < data[i].length; j++)
+			$( "#'" + data[i].stockNo +"'" ).append( "<div><div>" + new Date(data[i].datetime) + "</div><div>" + data[i].OPEN + "</div><div>" + data[i].CLOSE  + "</div><div>"   + data[i].DAYS_RANGE + "</div></div>" ) // John
+	}
 }
 }, "json" );
+
+
+
  $(function () {
 
             $('#add').click(function () {
