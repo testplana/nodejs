@@ -114,7 +114,7 @@ app.get('/newscontent', function (req, res) {
 		for (i = 0 ; i < docs.length;i++){
 			var stockNo = docs[i].stockNo;
 				stockNo = stockNo.substring(1,5);
-			db.collection(req.query.data).find(
+			db.collection('stock').find(
 				{$or: [ {'stockName': {'$regex': stockNo, '$options': 'i'}}
 					, { 'stockNo': {'$regex': stockNo, '$options': 'i'} }
 				]}  
