@@ -119,7 +119,7 @@ app.get('/newscontent', function (req, res) {
 				{$or: [ {'stockName': {'$regex': stockNo, '$options': 'i'}}
 					, { 'stockNo': {'$regex': stockNo, '$options': 'i'} }
 				]}  
-			).limit(500).sort( { datetime: -1 } ).toArray(
+			).sort( { datetime: -1 } ).toArray(
 			function(err, stockdocs){		
 			
 				stockList.push(Object.assign({ newsdoc, stockdocs }));
