@@ -112,6 +112,7 @@ app.get('/newscontent', function (req, res) {
 	db.collection('news').find().limit(100).sort( { datetime: -1 } ).toArray(
 	function(err, docs){		
 		for (i = 0 ; i < docs.length;i++){
+			stockList.push(docs[i]);
 			var stockNo = docs[i].stockNo;
 				stockNo = stockNo.substring(1,5);
 			db.collection('stock').find(
@@ -120,8 +121,7 @@ app.get('/newscontent', function (req, res) {
 				]}  
 			).limit(100).sort( { datetime: -1 } ).toArray(
 			function(err, stockdocs){
-				docs[i].push(stockdocs);
-				stockList.push(docs[i]);
+				stockList.push(stockdocs);
 			});				
 			
 		}
