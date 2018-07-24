@@ -236,7 +236,7 @@ pre {
 
 <script>
 
-var url = "http://nodejs-mongo-persistent-nodejs-1.1d35.starter-us-east-1.openshiftapps.com/newscontent";
+var url = "http://nodejs-mongo-persistent-nodejs-1.1d35.starter-us-east-1.openshiftapps.com/data?data=news";
 
  
 $.get( url, function( data ) {
@@ -247,7 +247,16 @@ for (i = 0 ; i < data.length;i++){
 }
 }, "json" );
 
+var url = "http://nodejs-mongo-persistent-nodejs-1.1d35.starter-us-east-1.openshiftapps.com/newscontent";
 
+ 
+$.get( url, function( data ) {
+//console.log(data);
+for (i = 0 ; i < data.length;i++){
+ $( "#content" )
+    .append( "<tr><td>" + data[i].stockNo + "</td><td>" + data[i].stockName + "</td><td><a href='http://www.hkexnews.hk/" + data[i].docUrl + "'>"  + data[i].docName + "</a></td><td>"   + data[i].datetime + "</td></tr>" ) // John
+}
+}, "json" );
  $(function () {
 
             $('#add').click(function () {
