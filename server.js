@@ -112,16 +112,16 @@ app.get('/newscontent', function (req, res) {
 	db.collection('news').find().limit(100).sort( { datetime: -1 } ).toArray(
 	function(err, docs){		
 		for (i = 0 ; i < docs.length;i++){
-			stockList.push(docs[i]);
+			
 			var stockNo = docs[i].stockNo;
 				stockNo = stockNo.substring(1,5);
 			db.collection('stock').find(
 				{$or: [ {'stockName': {'$regex': stockNo, '$options': 'i'}}
 					, { 'stockNo': {'$regex': stockNo, '$options': 'i'} }
 				]}  
-			).limit(100).sort( { datetime: -1 } ).toArray(
-			function(err, stockdocs){
-				stockList.push(stockdocs);
+			).limit(500).sort( { datetime: -1 } ).toArray(
+			function(err, stockdocs){				
+				stockList.push(Object.assign({ docs[i], stockdocs }));
 			});				
 			
 		}
