@@ -99,6 +99,7 @@ app.get('/pagecount', function (req, res) {
     res.send('{ pageCount: -1 }');
   }
 });
+var stockList = [];
 
 var listofstock = [];
 app.get('/newscontent', function (req, res) {
@@ -108,28 +109,29 @@ app.get('/newscontent', function (req, res) {
     initDb(function(err){});
   }
   if (db) {
-	if (req.query.action == 'search') {		
-		db.collection('news').find(
-			{$or: [ {'docName': {'$regex': req.query.data, '$options': 'i'}}
-				, { 'stockNo': {'$regex': req.query.data, '$options': 'i'} }
-				, { 'stockName': {'$regex': req.query.data, '$options': 'i'} }
-			]}  
-		).limit(100).sort( { datetime: -1 } ).toArray(
-		function(err, docs){
-			res.send(JSON.stringify(docs));
-		});
-     
-	}else{
-		db.collection('news').find().limit(100).sort( { datetime: -1 } ).toArray(
-		function(err, docs){
-			res.send(JSON.stringify(docs));
-		});
-	}
-
+	db.collection('news').find().limit(100).sort( { datetime: -1 } ).toArray(
+	function(err, docs){		
+		for (i = 0 ; i < docs.length;i++){
+			var stockNo = docs[i].stockNo;
+				stockNo = stockNo.substring(1,5);
+			db.collection(req.query.data).find(
+				{$or: [ {'stockName': {'$regex': stockNo, '$options': 'i'}}
+					, { 'stockNo': {'$regex': stockNo, '$options': 'i'} }
+				]}  
+			).limit(100).sort( { datetime: -1 } ).toArray(
+			function(err, stockdocs){
+				docs[i].push(stockdocs);
+				stockList.push(docs[i]);
+			});				
+			
+		}
+	});
+	res.send(JSON.stringify(stockList));
   } else {
     res.send('{ failed: -1 }');
   }
 });
+
 
 app.get('/data', function (req, res) {
   // try to initialize the db on every request if it's not already
@@ -139,12 +141,38 @@ app.get('/data', function (req, res) {
   }
   if (db) {
 
+	
+		
+	if (req.query.action == 'search') {		
+		if (req.query.data == 'news'){
+			db.collection(req.query.data).find(
+				{$or: [ {'docName': {'$regex': req.query.param, '$options': 'i'}}
+					, { 'stockNo': {'$regex': req.query.param, '$options': 'i'} }
+					, { 'stockName': {'$regex': req.query.param, '$options': 'i'} }
+				]}  
+			).limit(100).sort( { datetime: -1 } ).toArray(
+			function(err, docs){
+				res.send(JSON.stringify(docs));
+			});				
+		}else if (req.query.data == 'stock'){
+			db.collection(req.query.data).find(
+				{$or: [ {'stockName': {'$regex': req.query.param, '$options': 'i'}}
+					, { 'stockNo': {'$regex': req.query.param, '$options': 'i'} }
+				]}  
+			).limit(100).sort( { datetime: -1 } ).toArray(
+			function(err, docs){
+				res.send(JSON.stringify(docs));
+			});				
+		}
+		
+     
+	}else{		
 		db.collection(req.query.data).find().limit(100).sort( { datetime: -1 } ).toArray(
 		function(err, docs){
 			res.send(JSON.stringify(docs));
 		});
-		
-
+	}
+	
   } else {
     res.send('{ failed: -1 }');
   }
