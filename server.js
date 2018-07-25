@@ -120,7 +120,7 @@ $lookup:
         as: "stock_news"
     }
 })
-
+console.log(stocknews)
 	/*db.collection('news').find().limit(100).sort( { datetime: -1 } ).toArray(
 	function(err, docs){		
 		for (i = 0 ; i < docs.length;i++){
@@ -142,7 +142,8 @@ $lookup:
 			
 		}
 	});*/
-	res.send(JSON.stringify(Object.assign({ stocknews })));
+//	res.send(JSON.stringify(Object.assign({ stocknews })));
+  res.send('{ done: 1 }');
   } else {
     res.send('{ failed: -1 }');
   }
