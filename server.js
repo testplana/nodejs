@@ -142,7 +142,7 @@ $lookup:
 			
 		}
 	});*/
-	res.send(JSON.stringify(stocknews));
+	res.send(JSON.stringify(Object.assign({ stocknews })));
   } else {
     res.send('{ failed: -1 }');
   }
