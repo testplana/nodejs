@@ -144,8 +144,10 @@ db.collection('news').find().limit(100).sort( { datetime: -1 } ).toArray(
 				]}  
 			).sort( { datetime: -1 } ).toArray(
 			function(err, stockdocs){		
-			console.log(stockdocs);
-				stockList.push(Object.assign({ stockdocs }));
+				for (j = 0 ; j < stockdocs.length;j++){					
+					stockList.push(Object.assign({ stockdocs[j] }));
+				}
+				
 			});				
 			
 		}
