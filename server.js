@@ -109,7 +109,19 @@ app.get('/newscontent', function (req, res) {
     initDb(function(err){});
   }
   if (db) {
-	db.collection('news').find().limit(100).sort( { datetime: -1 } ).toArray(
+	  
+	  
+	var stocknews =   db.collection('stock').aggregate({
+$lookup:
+    {
+        from: "news",
+        localField: "stockNo",
+        foreignField : "stockNo",
+        as: "stock_news"
+    }
+})
+
+	/*db.collection('news').find().limit(100).sort( { datetime: -1 } ).toArray(
 	function(err, docs){		
 		for (i = 0 ; i < docs.length;i++){
 			var newsdoc = docs[i];
@@ -129,8 +141,8 @@ app.get('/newscontent', function (req, res) {
 			});				
 			
 		}
-	});
-	res.send(JSON.stringify(stockList));
+	});*/
+	res.send(JSON.stringify(stocknews));
   } else {
     res.send('{ failed: -1 }');
   }
