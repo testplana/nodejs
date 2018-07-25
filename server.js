@@ -132,9 +132,11 @@ db.collection('news').find().limit(100).sort( { datetime: -1 } ).toArray(
 		for (i = 0 ; i < docs.length;i++){
 			var newsdoc = docs[i];
 			var stockNo = docs[i].stockNo;
-				stockNo = stockNo.substring(1,5);
+				stockNo = stockNo.substring(1,5)+ '.HK';
+				
 			console.log('News for: ' + stockNo);
 			console.log('----------------------------------------------------');
+			
 			stockList.push(Object.assign({ newsdoc }));
 			db.collection('stock').find(
 				{$or: [ {'stockName': {'$regex': stockNo, '$options': 'i'}}
