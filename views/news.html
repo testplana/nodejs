@@ -236,29 +236,50 @@ pre {
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
 
 <script>
-
+	function sortByKey(array, key) {
+		return array.sort(function(a, b) {
+			var x = a[key]; var y = b[key];
+			return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+		});
+	}
 	var url = "http://nodejs-mongo-persistent-nodejs-1.1d35.starter-us-east-1.openshiftapps.com/newscontent";
 
 	$.get( url, function( data ) {
-	//console.log(data);
-	for (i = 0 ; i < data.length;i++){
-		var news = data[i].newsdoc;
-		var stock = data[i].stockdocs;
-		var html = ''
-		if (news!=null){
-		 html += ( "<div id='" + news.stockNo +"'><div>" + news.stockNo + "</div><div>" + news.stockName + "</div><div><a href='http://www.hkexnews.hk/" + news.docUrl + "'>"  + news.docName + "</a></div><div>"   + news.datetime + "</div>" );
-		
-		}
-		if(stock != null){
-			for (var j = 0 ; j < stock.length; j++){
-				html += ( "<div>" + stock[j].stockNo + "</div>" + "<div>" + new Date(stock[j].datetime) + "</div><div>"  + stock[j].OPEN + "</div><div>" + stock[j].CLOSE + "</div>" );
+	
+		var datalist = []
+		for (i = 0 ; i < data.length;i++){
+			var news = data[i].newsdoc;
+			var stock = data[i].stockdocs;
+			var html = ''
+			if (news!=null){
+			datalist.push(( news ));
+			
 			}
+			if(stock != null){
+				for(j = 0; j < stock.length; j++){//console.log(stock[j])
+					s = stock[j];
+					datalist.push((s));
+			  }
+			}
+			
+			
 		}
-		html += '</div>'
-		$( "#content" ).append(html);
 		
-	}
-
+		datalist = sortByKey(datalist, 'stockNo');
+		for (i = 0 ; i < datalist.length;i++){
+			var item = datalist[i];
+			var html = ''
+			if (item.docName!=null){
+				html += ( "<hr><div id='" + item.stockNo +"'><div>" + item.stockNo + "</div><div>" + item.stockName + "</div><div><a href='http://www.hkexnews.hk/" + item.docUrl + "'>"  +item.docName + "</a></div><div>"   + item.datetime + "</div>" );
+			
+			}
+			if(item.docName == null){
+				html += ( "<div>" + item.stockNo + "</div>" + "<div>" + new Date(item.datetime) + "</div><div>"  + item.OPEN + "</div><div>" + item.CLOSE + "</div>" );
+			}
+			html += '</div>'
+			$( "#content" ).append(html);
+			
+		}
 	}, "json" );
 
 
