@@ -102,6 +102,12 @@ app.get('/pagecount', function (req, res) {
 var stockList = [];
 
 var listofstock = [];
+function sortByKey(array, key) {
+    return array.sort(function(a, b) {
+        var x = a[key]; var y = b[key];
+        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+    });
+}
 app.get('/newscontent', function (req, res) {
   // try to initialize the db on every request if it's not already
   // initialized.
@@ -110,7 +116,7 @@ app.get('/newscontent', function (req, res) {
   }
   if (db) {
 	  
-	  
+	/*  
 	var stocknews =   db.collection('stock').aggregate({
 $lookup:
     {
@@ -120,8 +126,8 @@ $lookup:
         as: "stock_news"
     }
 })
-console.log(stocknews)
-	/*db.collection('news').find().limit(100).sort( { datetime: -1 } ).toArray(
+console.log(stocknews)*/
+db.collection('news').find().limit(100).sort( { datetime: -1 } ).toArray(
 	function(err, docs){		
 		for (i = 0 ; i < docs.length;i++){
 			var newsdoc = docs[i];
@@ -141,9 +147,10 @@ console.log(stocknews)
 			});				
 			
 		}
-	});*/
-//	res.send(JSON.stringify(Object.assign({ stocknews })));
-  res.send('{ done: 1 }');
+	});
+	stockList = sortByKey(stockList, 'stockNo');
+	res.send(JSON.stringify(stockList));
+ // res.send('{ done: 1 }');
   } else {
     res.send('{ failed: -1 }');
   }
