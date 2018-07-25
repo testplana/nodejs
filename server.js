@@ -117,6 +117,7 @@ app.get('/newscontent', function (req, res) {
 				stockNo = stockNo.substring(1,5);
 			console.log('News for: ' + stockNo);
 			console.log('----------------------------------------------------');
+			stockList.push(Object.assign({ newsdoc }));
 			db.collection('stock').find(
 				{$or: [ {'stockName': {'$regex': stockNo, '$options': 'i'}}
 					, { 'stockNo': {'$regex': stockNo, '$options': 'i'} }
@@ -124,7 +125,7 @@ app.get('/newscontent', function (req, res) {
 			).sort( { datetime: -1 } ).toArray(
 			function(err, stockdocs){		
 			console.log(stockdocs);
-				stockList.push(Object.assign({ newsdoc, stockdocs }));
+				stockList.push(Object.assign({ stockdocs }));
 			});				
 			
 		}
