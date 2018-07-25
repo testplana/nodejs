@@ -102,12 +102,7 @@ app.get('/pagecount', function (req, res) {
 var stockList = [];
 
 var listofstock = [];
-function sortByKey(array, key) {
-    return array.sort(function(a, b) {
-        var x = a[key]; var y = b[key];
-        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
-    });
-}
+
 app.get('/newscontent', function (req, res) {
   // try to initialize the db on every request if it's not already
   // initialized.
@@ -132,7 +127,7 @@ db.collection('news').find().limit(100).sort( { datetime: -1 } ).toArray(
 		for (i = 0 ; i < docs.length;i++){
 			var newsdoc = docs[i];
 			var stockNo = newsdoc.stockNo;
-				stockNo = stockNo.substring(1,5)+ '.HK';
+				stockNo = stockNo.substring(1,5);
 				newsdoc.stockNo = (newsdoc.stockNo).substring(1,5)+ '.HK';
 			console.log('News for: ' + stockNo);
 			console.log('----------------------------------------------------');
@@ -144,16 +139,11 @@ db.collection('news').find().limit(100).sort( { datetime: -1 } ).toArray(
 				]}  
 			).sort( { datetime: -1 } ).toArray(
 			function(err, stockdocs){		
-				for (j = 0 ; j < stockdocs.length;j++){		
-					temp = stockdocs[j];
-					stockList.push(Object.assign({ temp }));
-				}
-				
+				stockList.push(Object.assign({ stockdocs }));
 			});				
 			
 		}
 	});
-	stockList = sortByKey(stockList, 'stockNo');
 	res.send(JSON.stringify(stockList));
  // res.send('{ done: 1 }');
   } else {
