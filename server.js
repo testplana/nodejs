@@ -131,9 +131,9 @@ db.collection('news').find().limit(100).sort( { datetime: -1 } ).toArray(
 	function(err, docs){		
 		for (i = 0 ; i < docs.length;i++){
 			var newsdoc = docs[i];
-			var stockNo = docs[i].stockNo;
+			var stockNo = newsdoc.stockNo;
 				stockNo = stockNo.substring(1,5)+ '.HK';
-				
+				newsdoc.stockNo = (newsdoc.stockNo).substring(1,5)+ '.HK';
 			console.log('News for: ' + stockNo);
 			console.log('----------------------------------------------------');
 			
