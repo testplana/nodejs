@@ -244,9 +244,15 @@ pre {
 	for (i = 0 ; i < data.length;i++){
 		var news = data[i].newsdoc;
 		var stock = data[i].stockdocs;
-		var html = ( "<div id='" + news.stockNo +"'><div>" + news.stockNo + "</div><div>" + news.stockName + "</div><div><a href='http://www.hkexnews.hk/" + news.docUrl + "'>"  + news.docName + "</a></div><div>"   + news.datetime + "</div>" );
-		for (var j = 0 ; j < stock.length; j++){
-			html += ( "<div>" + new Date(stock[j].datetime) + "</div><div>"  + stock[j].OPEN + "</div><div>" + stock[j].CLOSE + "</div>" );
+		var html = ''
+		if (news!=null){
+		 html += ( "<div id='" + news.stockNo +"'><div>" + news.stockNo + "</div><div>" + news.stockName + "</div><div><a href='http://www.hkexnews.hk/" + news.docUrl + "'>"  + news.docName + "</a></div><div>"   + news.datetime + "</div>" );
+		
+		}
+		if(stock != null){
+			for (var j = 0 ; j < stock.length; j++){
+				html += ( "<div>" + stock[j].stockNo + "</div>" + "<div>" + new Date(stock[j].datetime) + "</div><div>"  + stock[j].OPEN + "</div><div>" + stock[j].CLOSE + "</div>" );
+			}
 		}
 		html += '</div>'
 		$( "#content" ).append(html);
