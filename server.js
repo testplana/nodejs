@@ -319,9 +319,19 @@ app.get('/scrape', function(req, res){
 		res.send("Done")
 	})
 })
+Date.prototype.yyyymmdd = function() {
+  var mm = this.getMonth() + 1; // getMonth() is zero-based
+  var dd = this.getDate();
+
+  return [this.getFullYear(),
+          (mm>9 ? '' : '0') + mm,
+          (dd>9 ? '' : '0') + dd
+         ].join('');
+};
+
 
 app.get('/scrapestock', function(req, res){
-	
+	var datestring = new Date().yyyymmdd();
 	var date = new Date();
 	date.setDate(date.getDate() - 14);
 
@@ -350,7 +360,7 @@ app.get('/scrapestock', function(req, res){
 						var datetime = +new Date();
 						var stock = db.collection('stock');
 						stock.insert({
-							_id: datetime+STOCK_NO,
+							_id: datestring+STOCK_NO,
 							stockNo: STOCK_NO,
 							stockName:STOCK_NAME_NUMBER,
 							datetime: datetime,
@@ -376,7 +386,7 @@ app.get('/scrapestock', function(req, res){
 })
 
 app.get('/scrapeonestock', function(req, res){
-	
+	var datestring = new Date().yyyymmdd();
 	var stockNo = req.query.stockNo;
 	var stockurl = 'https://finance.yahoo.com/quote/' + stockNo + '.HK?p=' + stockNo + '.HK&.tsrc=fin-srch';
 	request(stockurl, function(error, response, html){
@@ -394,7 +404,7 @@ app.get('/scrapeonestock', function(req, res){
 			var datetime = +new Date();
 			var stock = db.collection('stock');
 			stock.insert({
-				_id: datetime + stockNo,
+				_id: datestring + stockNo,
 				stockNo: stockNo,
 				datetime: datetime,
 				OPEN: OPEN,
