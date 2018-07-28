@@ -353,6 +353,15 @@ app.get('/scrapeonestock', function(req, res){
 			var TD_CHANGE = $('span[data-reactid="36"]:contains("%")').text();
 			var datetime = +new Date();
 			var stock = db.collection('stock');
+			console.log(PREV_CLOSE);
+			console.log(AVERAGE_VOLUME_3MONTH);
+			console.log(OPEN);
+			console.log(CLOSE);
+			console.log(DAYS_RANGE);
+			console.log(FIFTY_TWO_WK_RANGE);
+			console.log(TD_VOLUME);
+			console.log(TD_CHANGE);
+			
 			stock.insert({
 				_id: datestring + stockNo,
 				stockNo: stockNo,
@@ -367,7 +376,7 @@ app.get('/scrapeonestock', function(req, res){
 				AVERAGE_VOLUME_3MONTH: AVERAGE_VOLUME_3MONTH
 			})
 		}
-		console.log(stock);
+		
 		res.send("Done")
 	})
 	
