@@ -182,6 +182,14 @@ app.get('/data', function (req, res) {
 			function(err, docs){
 				res.send(JSON.stringify(docs));
 			});				
+		}else{
+			db.collection(req.query.data).find(
+				{$or: [ { 'stockNo': {'$regex': req.query.param, '$options': 'i'} }
+				]}  
+			).limit(100).sort( { datetime: -1 } ).toArray(
+			function(err, docs){
+				res.send(JSON.stringify(docs));
+			});		
 		}
 		
      
@@ -314,9 +322,10 @@ function scrapeAStock(stockNo) {
 				FIFTY_TWO_WK_RANGE: FIFTY_TWO_WK_RANGE,
 				AVERAGE_VOLUME_3MONTH: AVERAGE_VOLUME_3MONTH
 			})
-			 var myquery = { stockNo: stockNo,  datetime:datestring};
+			var datestring = new Date().yyyymmdd();
+			 var myquery = { stockNo: req.query.stockNo,  datetime:datestring};
 			  var newvalues = { $set: {uodated: 1 } };
-			  dbo.collection("stockUpdateList").updateOne(myquery, newvalues, function(err, res) {
+			  db.collection("stockUpdateList").updateOne(myquery, newvalues, function(err, res) {
 			    if (err) throw err;
 			    console.log("1 document updated");
 			    
@@ -356,9 +365,9 @@ app.get('/scrapestocktest2', function(req, res){
 
 	var udpate = db.collection('stockUpdateList').find({ uodated: { $eq: 0 } }).limit(10).toArray(
 	function(err, docs){	
-		//for (i = 0 ; i < docs.length;i++){
-		//	scrapeAStock(docs[i].stockNo);
-		//}
+		for (i = 0 ; i < docs.length;i++){
+			scrapeAStock(docs[i].stockNo);
+		}
 		res.send(JSON.stringify(docs));
 		
 	})
