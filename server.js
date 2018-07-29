@@ -321,7 +321,7 @@ app.get('/scrapestocktest', function(req, res){
 	var datestring = new Date().yyyymmdd();
 	var date = new Date();
 	date.setDate(date.getDate() - 14);
-	var uniqueStockNo = db.collection('news').distinct('stockNo');
+	var uniqueStockNo = db.collection('news').distinct('stockNo').find();
 	console.log(uniqueStockNo);
 	  res.send('{ done: 1 }');
 })
