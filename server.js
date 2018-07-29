@@ -326,8 +326,7 @@ function scrapeAStock(stockNo) {
 			var stockNumber = STOCK_NO.substring(0,4);
 			 var myquery = { stockNo: stockNumber,  datetime:datestring};
 			  var newvalues = { $set: {uodated: 1 } };
-			  db.collection("stock
-					List").updateOne(myquery, newvalues, function(err, res) {
+			  db.collection("stockUpdateList").updateOne(myquery, newvalues, function(err, res) {
 			    if (err) throw err;
 			    console.log("1 document updated");
 			    
