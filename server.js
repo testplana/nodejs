@@ -323,6 +323,7 @@ app.get('/scrapestocktest', function(req, res){
 	date.setDate(date.getDate() - 14);
 	var uniqueStockNo = db.collection('news').distinct('stockNo');
 	console.log(uniqueStockNo);
+	  res.send('{ done: 1 }');
 })
 app.get('/scrapestock', function(req, res){
 	var datestring = new Date().yyyymmdd();
