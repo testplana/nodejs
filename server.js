@@ -314,25 +314,47 @@ function scrapeAStock(stockNo) {
 				FIFTY_TWO_WK_RANGE: FIFTY_TWO_WK_RANGE,
 				AVERAGE_VOLUME_3MONTH: AVERAGE_VOLUME_3MONTH
 			})
+			 var myquery = { stockNo: stockNo,  datetime:datestring};
+			  var newvalues = { $set: {uodated: 1 } };
+			  dbo.collection("stockUpdateList").updateOne(myquery, newvalues, function(err, res) {
+			    if (err) throw err;
+			    console.log("1 document updated");
+			    
+			  });
 		}
 	
 	})
 }
 
 app.get('/scrapestocktest', function(req, res){
+	var datestring = new Date().yyyymmdd();
 	var uniqueStockNo = db.collection('news').distinct("stockNo",(function(err, docs){
          	console.log("=============Result===============");
 		console.log(docs);
 		for (var i = 0; i < docs.length; i++ ){
 			var stockNos = docs[i].match(/.{1,5}/g)
 			for (var j = 0 ; j < stockNos.length; j++){
+				var stock = db.collection('stockUpdateList');
+				stock.insert({
+					_id: datestring+stockNos[j].substring(1,5),
+					stockNo: stockNos[j].substring(1,5),
+					uodated:0,
+					datetime: datestring							
+				})
 				
-				scrapeAStock(stockNos[j].substring(1,5))
 			}
 		}
    		console.log("=============Result end===============");
 	
         }))
+	
+	db.collection('stockUpdateList').find({ uodated: { $eq: 0 } }).limit(100).toArray(
+	function(err, docs){	
+		for (i = 0 ; i < docs.length;i++){
+			scrapeAStock(docs[i].stockNo);
+		}
+		
+	})
 	res.send('{ done: 1 }');
 })
 app.get('/scrapestock', function(req, res){
