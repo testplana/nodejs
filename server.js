@@ -279,8 +279,7 @@ Date.prototype.yyyymmdd = function() {
          ].join('');
 };
 
-function scrapeAStock(item) {
-	var stockNo = item.substring(1,5);
+function scrapeAStock(stockNo) {
     	var stockurl = 'https://finance.yahoo.com/quote/' + stockNo + '.HK?p=' + stockNo + '.HK&.tsrc=fin-srch';
 	console.log(stockurl);
 	request(stockurl, function(error, response, html){
@@ -326,7 +325,8 @@ app.get('/scrapestocktest', function(req, res){
 		console.log(docs);
 		for (var i = 0; i < docs.length; i++ ){
 			var stockNos = docs[i].match(/.{1,5}/g)
-			for (var j = 0 ; j < stockNos.length; j++){			
+			for (var j = 0 ; j < stockNos.length; j++){
+				
 				scrapeAStock(stockNos[j].substring(1,5))
 			}
 		}
