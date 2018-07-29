@@ -280,6 +280,9 @@ Date.prototype.yyyymmdd = function() {
 };
 
 function scrapeAStock(stockNo) {
+	var datestring = new Date().yyyymmdd();
+	var date = new Date();
+	date.setDate(date.getDate() - 14);
     	var stockurl = 'https://finance.yahoo.com/quote/' + stockNo + '.HK?p=' + stockNo + '.HK&.tsrc=fin-srch';
 	console.log(stockurl);
 	request(stockurl, function(error, response, html){
@@ -317,9 +320,6 @@ function scrapeAStock(stockNo) {
 }
 
 app.get('/scrapestocktest', function(req, res){
-	var datestring = new Date().yyyymmdd();
-	var date = new Date();
-	date.setDate(date.getDate() - 14);
 	var uniqueStockNo = db.collection('news').distinct("stockNo",(function(err, docs){
          	console.log("=============Result===============");
 		console.log(docs);
