@@ -325,6 +325,7 @@ app.get('/scrapestocktest', function(req, res){
             console.log(docs);
   
         }))
+	console.log("=============Result===============");
 	console.log(uniqueStockNo);
 	  res.send('{ done: 1 }');
 })
