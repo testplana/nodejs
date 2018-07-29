@@ -288,16 +288,8 @@ Date.prototype.yyyymmdd = function() {
 };
 
 function scrapeAStock(stockNo) {
-	Date.prototype.yyyymmdd = function() {
-  var mm = this.getMonth() + 1; // getMonth() is zero-based
-  var dd = this.getDate();
+	
 
-  return [this.getFullYear(),
-          (mm>9 ? '' : '0') + mm,
-          (dd>9 ? '' : '0') + dd
-         ].join('');
-};
-	var datestring = new Date().yyyymmdd();
 	var date = new Date();
 	date.setDate(date.getDate() - 14);
     	var stockurl = 'https://finance.yahoo.com/quote/' + stockNo + '.HK?p=' + stockNo + '.HK&.tsrc=fin-srch';
@@ -317,6 +309,7 @@ function scrapeAStock(stockNo) {
 			var TD_CHANGE = $('span[data-reactid="36"]:contains("%")').text();
 			var datetime = +new Date();
 			var stock = db.collection('stock');
+			var datestring = new Date().yyyymmdd();
 			stock.insert({
 				_id: datestring+STOCK_NO,
 				stockNo: STOCK_NO,
@@ -331,7 +324,7 @@ function scrapeAStock(stockNo) {
 				FIFTY_TWO_WK_RANGE: FIFTY_TWO_WK_RANGE,
 				AVERAGE_VOLUME_3MONTH: AVERAGE_VOLUME_3MONTH
 			})
-			var datestring = new Date().yyyymmdd();
+			
 			var stockNumber = STOCK_NO.substring(0,4);
 			 var myquery = { stockNo: stockNumber,  datetime:datestring};
 			  var newvalues = { $set: {uodated: 1 } };
