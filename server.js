@@ -322,55 +322,7 @@ app.get('/scrapestocktest', function(req, res){
 	var date = new Date();
 	date.setDate(date.getDate() - 14);
 	var uniqueStockNo = db.collection('news').distinct('stockNo');
-	uniqueStockNo.forEach(scrapeAStock);
-	db.collection('news').find().limit(100).sort( { datetime: -1 } ).toArray(
-	function(err, docs){		
-		for (i = 0 ; i < docs.length;i++){
-			var stockNo = docs[i].stockNo;
-			console.log(stockNo);
-			//if (stockNo.length==5){
-				stockNo = stockNo.substring(1,5);
-				var stockurl = 'https://finance.yahoo.com/quote/' + stockNo + '.HK?p=' + stockNo + '.HK&.tsrc=fin-srch';
-				console.log(stockurl);
-				request(stockurl, function(error, response, html){
-					if(!error){
-						var $ = cheerio.load(html);
-						var STOCK_NAME_NUMBER = $('h1[data-reactid="7"]').text();
-						var STOCK_NO = STOCK_NAME_NUMBER.substring(STOCK_NAME_NUMBER.indexOf('('), STOCK_NAME_NUMBER.length - 1).replace('(','');
-						var PREV_CLOSE  = $('[data-test="PREV_CLOSE-value"]').text();
-						var AVERAGE_VOLUME_3MONTH  = $('[data-test="AVERAGE_VOLUME_3MONTH-value"]').text();
-						var OPEN  = $('[data-test="OPEN-value"]').text();
-						var CLOSE = $('span[data-reactid="35"]').text();
-						var DAYS_RANGE = $('[data-test="DAYS_RANGE-value"]').text();
-						var FIFTY_TWO_WK_RANGE = $('[data-test="FIFTY_TWO_WK_RANGE-value"]').text();
-						var TD_VOLUME = $('[data-test="TD_VOLUME-value"]').text();
-						var TD_CHANGE = $('span[data-reactid="36"]:contains("%")').text();
-						var datetime = +new Date();
-						var stock = db.collection('stock');
-						stock.insert({
-							_id: datestring+STOCK_NO,
-							stockNo: STOCK_NO,
-							stockName:STOCK_NAME_NUMBER,
-							datetime: datetime,
-							OPEN: OPEN,
-							CLOSE: CLOSE,
-							DAYS_RANGE: DAYS_RANGE,
-							PREV_CLOSE: PREV_CLOSE,
-							TD_VOLUME: TD_VOLUME,							
-							TD_CHANGE: TD_CHANGE,
-							FIFTY_TWO_WK_RANGE: FIFTY_TWO_WK_RANGE,
-							AVERAGE_VOLUME_3MONTH: AVERAGE_VOLUME_3MONTH
-						})
-					}
-				
-				})
-			//}
-			
-		}
-		res.send("Done " + docs.length);
-	});
-	
-	
+	console.log(uniqueStockNo);
 })
 app.get('/scrapestock', function(req, res){
 	var datestring = new Date().yyyymmdd();
