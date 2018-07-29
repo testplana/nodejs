@@ -370,7 +370,7 @@ app.get('/scrapestocktest3', function(req, res){
 	var datestring = new Date().yyyymmdd();
 			 var myquery = { stockNo: req.query.stockNo,  datetime:datestring};
 			  var newvalues = { $set: {uodated: 1 } };
-			  dbo.collection("stockUpdateList").updateOne(myquery, newvalues, function(err, res) {
+			  db.collection("stockUpdateList").updateOne(myquery, newvalues, function(err, res) {
 			    if (err) throw err;
 			    console.log("1 document updated");
 			    
