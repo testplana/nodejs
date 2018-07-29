@@ -347,16 +347,37 @@ app.get('/scrapestocktest', function(req, res){
    		console.log("=============Result end===============");
 	
         }))
-	
-	db.collection('stockUpdateList').find({ uodated: { $eq: 0 } }).limit(100).toArray(
-	function(err, docs){	
-		for (i = 0 ; i < docs.length;i++){
-			scrapeAStock(docs[i].stockNo);
-		}
-		
-	})
+
 	res.send('{ done: 1 }');
 })
+
+
+app.get('/scrapestocktest2', function(req, res){
+
+	var udpate = db.collection('stockUpdateList').find({ uodated: { $eq: 0 } }).limit(10).toArray(
+	function(err, docs){	
+		//for (i = 0 ; i < docs.length;i++){
+		//	scrapeAStock(docs[i].stockNo);
+		//}
+		res.send(JSON.stringify(docs));
+		
+	})
+	
+})
+
+app.get('/scrapestocktest3', function(req, res){
+
+	var datestring = new Date().yyyymmdd();
+			 var myquery = { stockNo: req.query.stockNo,  datetime:datestring};
+			  var newvalues = { $set: {uodated: 1 } };
+			  dbo.collection("stockUpdateList").updateOne(myquery, newvalues, function(err, res) {
+			    if (err) throw err;
+			    console.log("1 document updated");
+			    
+			  });
+	res.send("Done ");
+})
+
 app.get('/scrapestock', function(req, res){
 	var datestring = new Date().yyyymmdd();
 	var date = new Date();
