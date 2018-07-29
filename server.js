@@ -324,16 +324,15 @@ app.get('/scrapestocktest', function(req, res){
 	var uniqueStockNo = db.collection('news').distinct("stockNo",(function(err, docs){
          	console.log("=============Result===============");
 		console.log(docs);
+		for (var i = 0; i < docs.length; i++ ){
+			var stockNos = docs[i].match(/.{1,5}/g)
+			for (var j = 0 ; j < stockNos.length; j++){			
+				scrapeAStock(stockNos[j].substring(1,5))
+			}
+		}
    		console.log("=============Result end===============");
 	
         }))
-	for (var i = 0; i < uniqueStockNo.length; i++ ){
-		var stockNos = uniqueStockNo[i].match(/.{1,5}/g)
-		for (var j = 0 ; j < stockNos.length; j++){			
-			scrapeAStock(stockNos[j].substring(1,5))
-		}
-	}
-	console.log(uniqueStockNo);
 	res.send('{ done: 1 }');
 })
 app.get('/scrapestock', function(req, res){
