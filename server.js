@@ -288,6 +288,15 @@ Date.prototype.yyyymmdd = function() {
 };
 
 function scrapeAStock(stockNo) {
+	Date.prototype.yyyymmdd = function() {
+  var mm = this.getMonth() + 1; // getMonth() is zero-based
+  var dd = this.getDate();
+
+  return [this.getFullYear(),
+          (mm>9 ? '' : '0') + mm,
+          (dd>9 ? '' : '0') + dd
+         ].join('');
+};
 	var datestring = new Date().yyyymmdd();
 	var date = new Date();
 	date.setDate(date.getDate() - 14);
