@@ -323,7 +323,7 @@ function scrapeAStock(stockNo) {
 				AVERAGE_VOLUME_3MONTH: AVERAGE_VOLUME_3MONTH
 			})
 			var datestring = new Date().yyyymmdd();
-			 var myquery = { stockNo: req.query.stockNo,  datetime:datestring};
+			 var myquery = { stockNo: STOCK_NO,  datetime:datestring};
 			  var newvalues = { $set: {uodated: 1 } };
 			  db.collection("stockUpdateList").updateOne(myquery, newvalues, function(err, res) {
 			    if (err) throw err;
