@@ -152,6 +152,24 @@ db.collection('news').find().limit(100).sort( { datetime: -1 } ).toArray(
 });
 
 
+app.get('/newsall', function (req, res) {
+  // try to initialize the db on every request if it's not already
+  // initialized.
+  if (!db) {
+    initDb(function(err){});
+  }
+  if (db) {
+	  
+db.collection('news').find().sort( { datetime: -1 } ).toArray(
+	function(err, docs){		
+		res.send(JSON.stringify(docs));
+	});
+  } else {
+    res.send('{ failed: -1 }');
+  }
+});
+
+
 app.get('/data', function (req, res) {
   // try to initialize the db on every request if it's not already
   // initialized.
