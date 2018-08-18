@@ -516,7 +516,23 @@ app.get('/scrapeonestock', function(req, res){
 	
 	
 })
+app.get('/datatest', function (req, res) {
+  // try to initialize the db on every request if it's not already
+  // initialized.
+  if (!db) {
+    initDb(function(err){});
+  }
+  if (db) {
 
+	newss = []
+	set =   db.collection('news').distinct( "stockNo" )
+	newss.push(Object.assign({ set }));
+ 	res.send(JSON.stringify(newss));
+   	
+  } else {
+    res.send('{ failed: -1 }');
+  }
+});
 // error handling
 app.use(function(err, req, res, next){
   console.error(err.stack);
