@@ -526,7 +526,7 @@ app.get('/newsdata', function (req, res) {
 
 	result = []
 	console.log('========================test====')
-	db.collection('news').find().toArray(
+	db.collection('news').find().sort( { datetime: -1 } ).toArray(
 	function(err, docs){	
 		for (i = 0 ; i < docs.length;i++){			
 			o = Object.assign({stockNo:docs[i].stockNo,datetime: docs[i].datetime})
