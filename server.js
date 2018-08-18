@@ -78,6 +78,7 @@ app.get('/', function (req, res) {
   }
 });
 
+app.use(express.static(__dirname + '/amcharts'));
 
 app.get('/news', function (req, res) {
    res.render('news.html', { pageCountMessage : null });
