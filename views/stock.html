@@ -11,44 +11,44 @@
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
 		<script>
-			AmCharts.ready(function () {
-				generateChartData();
-			});
-			arrContainer = [];
-			var stockSize = 2;
-			var dataSet = 4 * stockSize;
-			 for (i=0;i<dataSet;i++)
-			 {
-			   arrContainer.push(new Array());
-			 }
+			function onlyUnique(value, index, self) { 
+			    return self.indexOf(value) === index;
+			}
+			
 			var chartData1 = [];
 			var chartData2 = [];
 			var chartData3 = [];
 			var chartData4 = [];
 			
-			
-			function onlyUnique(value, index, self) { 
-			    return self.indexOf(value) === index;
-			}
-			var url = "http://nodejs-mongo-persistent-nodejs-1.1d35.starter-us-east-1.openshiftapps.com/newsdata";
-
-			$.get( url, function( data ) {
-
-				a = data
-				b= []
-				for (var i = 0; i < a.length; i++){
-				    	  var day = a[i].datetime.substring(0, 2)
-				    	  var month = a[i].datetime.substring(3, 5)
-				   	  var year = a[i].datetime.substring(6, 10)
-				   	  a[i].datetime = new Date(a[i].datetime.replace(a[i].datetime.substring(0,10), month + '/' + day + '/' + year +' '))
-					  b.push(a[i].stockNo)
-					  b = b.filter(onlyUnique)
-				}
-
-
-			}, "json" );
-	
 			var selector = ['1. open', '2. high', '3. low', '4. close'];
+			AmCharts.ready(function () {
+		
+				var url = "http://nodejs-mongo-persistent-nodejs-1.1d35.starter-us-east-1.openshiftapps.com/newsdata";
+
+				$.get( url, function( data ) {
+
+					a = data
+					b= []
+					for (var i = 0; i < a.length; i++){
+						  var day = a[i].datetime.substring(0, 2)
+						  var month = a[i].datetime.substring(3, 5)
+						  var year = a[i].datetime.substring(6, 10)
+						  a[i].datetime = new Date(a[i].datetime.replace(a[i].datetime.substring(0,10), month + '/' + day + '/' + year +' '))
+						  b.push(a[i].stockNo)
+						  b = b.filter(onlyUnique)
+					}
+					generateChartData();
+					arrContainer = [];
+					var stockSize = b.length;
+					var dataSet = 4 * stockSize;
+					 for (i=0;i<dataSet;i++)
+					 {
+					   arrContainer.push(new Array());
+					 }
+				}, "json" );
+				
+			});
+			
 			function generateChartData() {
 				var firstDate;			
 				for (var i = 0 ; i < b.length; b++){
