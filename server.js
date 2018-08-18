@@ -526,6 +526,10 @@ app.get('/datatest', function (req, res) {
 
 	newss = []
 	set =   db.collection('news').distinct( "stockNo" )
+	 console.log('========================test====')
+	 console.log(set)
+	console.log('========================end====')
+	
 	newss.push(Object.assign({ set }));
  	res.send(JSON.stringify(newss));
    	
