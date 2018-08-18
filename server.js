@@ -516,7 +516,7 @@ app.get('/scrapeonestock', function(req, res){
 	
 	
 })
-app.get('/datatest', function (req, res) {
+app.get('/newsdata', function (req, res) {
   // try to initialize the db on every request if it's not already
   // initialized.
   if (!db) {
@@ -524,16 +524,15 @@ app.get('/datatest', function (req, res) {
   }
   if (db) {
 
-	newss = []
-	 result = []
-	set =   db.collection('news').distinct( "stockNo" )
-	 console.log('========================test====')
+	result = []
+	console.log('========================test====')
 	db.collection('news').find().toArray(
 	function(err, docs){	
-		for (i = 0 ; i < docs.length;i++){
-			newss.push(docs[i].stockNo);
+		for (i = 0 ; i < docs.length;i++){			
+			o = Object.assign({stockNo:docs[i].stockNo,datetime: docs[i].datetime})
+			result.push(o);
 		}
-		result.push(Object.assign({ newss }));
+		
 		res.send(JSON.stringify(result));
 		
 	})
