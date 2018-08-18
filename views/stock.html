@@ -37,7 +37,7 @@
 						  b.push(a[i].stockNo)
 						  b = b.filter(onlyUnique)
 					}
-					generateChartData();
+					
 					arrContainer = [];
 					var stockSize = b.length;
 					var dataSet = 4 * stockSize;
@@ -45,6 +45,7 @@
 					 {
 					   arrContainer.push(new Array());
 					 }
+					generateChartData();
 				}, "json" );
 				
 			});
