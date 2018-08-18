@@ -525,13 +525,19 @@ app.get('/datatest', function (req, res) {
   if (db) {
 
 	newss = []
+	 result = []
 	set =   db.collection('news').distinct( "stockNo" )
 	 console.log('========================test====')
-	 console.log(set)
+	db.collection('news').find().toArray(
+	function(err, docs){	
+		for (i = 0 ; i < docs.length;i++){
+			newss.push(docs[i].stockNo);
+		}
+		result.push(Object.assign({ newss }));
+		res.send(JSON.stringify(result));
+		
+	})
 	console.log('========================end====')
-	
-	newss.push(Object.assign({ set }));
- 	res.send(JSON.stringify(newss));
    	
   } else {
     res.send('{ failed: -1 }');
